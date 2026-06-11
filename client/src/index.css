@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Outfit", system-ui, sans-serif;
+
+  --background: 210 40% 99%;
+  --foreground: 217 52% 12%;
+  --border: 215 25% 88%;
+  --input: 215 25% 88%;
+  --card: 0 0% 100%;
+  --card-foreground: 217 52% 12%;
+  --primary: 174 72% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 52% 12%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 30% 95%;
+  --muted-foreground: 217 20% 42%;
+  --accent: 174 60% 94%;
+  --accent-foreground: 174 80% 22%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 174 72% 35%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+.grid-glow {
+  background-image:
+    linear-gradient(hsl(217 45% 18% / 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(217 45% 18% / 0.6) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 70%);
+}
