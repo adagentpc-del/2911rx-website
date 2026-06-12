@@ -7,7 +7,7 @@ export interface IStorage {
   deleteInquiry(id: number): Promise<boolean>;
 }
 
-/** In-memory storage — used automatically when DATABASE_URL is not set. */
+/** In-memory storage, used automatically when DATABASE_URL is not set. */
 class MemStorage implements IStorage {
   private items: Inquiry[] = [];
   private nextId = 1;
@@ -47,7 +47,7 @@ class MemStorage implements IStorage {
   }
 }
 
-/** PostgreSQL storage via Drizzle — used when DATABASE_URL is set. */
+/** PostgreSQL storage via Drizzle, used when DATABASE_URL is set. */
 class DatabaseStorage implements IStorage {
   private dbPromise: Promise<any>;
 
@@ -97,5 +97,5 @@ export const storage: IStorage = process.env.DATABASE_URL
   : new MemStorage();
 
 if (!process.env.DATABASE_URL) {
-  console.log("[storage] DATABASE_URL not set — using in-memory storage (inquiries reset on restart)");
+  console.log("[storage] DATABASE_URL not set, using in-memory storage (inquiries reset on restart)");
 }

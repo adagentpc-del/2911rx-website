@@ -1,35 +1,37 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui";
+import { IconArrow } from "@/components/Icons";
+import { cn } from "@/lib/utils";
 
 const fadeUp = {
-  initial: { opacity: 0, y: 18 },
+  initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
 const STEPS = [
   {
     step: "01",
     title: "Request Information",
-    text: "Submit a partnership inquiry telling us about your practice, your patient base, and the programs you're interested in offering.",
+    text: "Submit a partnership inquiry telling us about your practice, your patient base, and the programs you want to offer.",
   },
   {
     step: "02",
     title: "Partnership Consultation",
-    text: "We walk you through available therapies, partnership pricing, onboarding, and fulfillment — and answer every question before you commit.",
+    text: "We walk you through available therapies, partnership pricing, onboarding, and fulfillment, and answer every question before you commit.",
   },
   {
     step: "03",
     title: "Structured Onboarding",
-    text: "Your team is onboarded with clear workflows, ordering access through our provider portal, and the education needed to launch confidently.",
+    text: "Your team is onboarded with clear workflows, ordering access through the provider portal, and the education needed to launch with confidence.",
   },
   {
     step: "04",
     title: "Launch Your Programs",
-    text: "Begin offering GLP-1 therapy, metabolic optimization, and peptide wellness programs through your practice — with our operational support behind you.",
+    text: "Begin offering GLP-1 therapy, metabolic optimization, and peptide wellness programs through your practice, with our operational support behind you.",
   },
   {
     step: "05",
@@ -41,15 +43,15 @@ const STEPS = [
 const FAQS = [
   {
     q: "What therapies are available?",
-    a: "2911Rx supports provider-directed GLP-1 therapy programs, metabolic optimization programs, and peptide wellness support. Specific offerings, formulations, and availability are discussed directly with prospective partners during consultation — all therapies are available exclusively through licensed providers.",
+    a: "2911Rx supports provider-directed GLP-1 therapy programs, metabolic optimization programs, and peptide wellness support. Specific offerings, formulations, and availability are discussed directly with prospective partners during consultation. All therapies are available exclusively through licensed providers.",
   },
   {
     q: "What is your pricing?",
-    a: "Partnership pricing is competitive and shared during your consultation. We structure pricing around long-term partnership economics — designed so your programs are sustainable and your margins support growth.",
+    a: "Partnership pricing is competitive and shared during your consultation. We structure pricing around long-term partnership economics, designed so your programs stay sustainable and your margins support growth.",
   },
   {
     q: "How does onboarding work?",
-    a: "Onboarding is structured and supported. After your consultation, we set up portal access, walk your team through ordering and fulfillment workflows, and provide the education materials needed to launch.",
+    a: "Onboarding is structured and supported. After your consultation, we set up portal access, walk your team through ordering and fulfillment workflows, and provide the education materials you need to launch.",
   },
   {
     q: "How does fulfillment work?",
@@ -57,41 +59,69 @@ const FAQS = [
   },
   {
     q: "Who can become a partner?",
-    a: "Licensed healthcare providers and wellness organizations — including wellness clinics, med spas, concierge medicine groups, telehealth operators, functional medicine clinics, and longevity-focused practices.",
+    a: "Licensed healthcare providers and wellness organizations, including wellness clinics, med spas, concierge medicine groups, telehealth operators, functional medicine clinics, and longevity-focused practices.",
   },
 ];
+
+function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <div className="rounded-2xl border border-border/80 bg-card transition-colors hover:border-teal/30">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+        aria-expanded={open}
+      >
+        <span className="font-display text-lg font-medium">{q}</span>
+        <span className={cn("shrink-0 text-teal-dark transition-transform duration-300", open && "rotate-45")}>
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </span>
+      </button>
+      <div className={cn("grid transition-all duration-300", open ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
+        <div className="overflow-hidden">
+          <p className="px-6 pb-5 leading-relaxed text-muted-foreground">{a}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HowItWorks() {
   return (
     <>
-      <section className="bg-navy py-20 text-white md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="hero-surface relative overflow-hidden py-20 text-white md:py-24">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="max-w-3xl">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-teal-light">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
               How It Works
             </p>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-              From Inquiry to Launch — Without the Friction
+            <h1 className="font-display text-4xl tracking-tight md:text-[3.4rem] md:leading-[1.05]">
+              From first call to first launch, without the friction
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">
-              A clear, structured path from first conversation to a fully operational
-              wellness program in your practice.
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+              A clear, structured path from initial conversation to a fully operational
+              wellness program inside your practice.
             </p>
           </motion.div>
         </div>
       </section>
 
       <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <ol className="space-y-6">
+        <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
+          <ol className="relative space-y-5 before:absolute before:left-[1.85rem] before:top-3 before:hidden before:h-[calc(100%-2rem)] before:w-px before:bg-border sm:before:block">
             {STEPS.map((s, i) => (
               <motion.li
                 key={s.step}
                 {...fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="flex gap-6 rounded-lg border bg-card p-6 shadow-sm"
+                transition={{ duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                className="relative flex gap-5 rounded-2xl border border-border/80 bg-card p-6 sm:gap-6"
               >
-                <span className="font-display text-3xl font-bold text-teal">{s.step}</span>
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-navy font-display text-lg font-semibold text-teal-light">
+                  {s.step}
+                </span>
                 <div>
                   <h3 className="text-lg font-semibold">{s.title}</h3>
                   <p className="mt-1.5 leading-relaxed text-muted-foreground">{s.text}</p>
@@ -103,27 +133,22 @@ export default function HowItWorks() {
       </section>
 
       <section className="bg-muted py-20 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <motion.h2 {...fadeUp} className="text-center text-3xl font-bold tracking-tight md:text-4xl">
-            Common Questions
-          </motion.h2>
-          <div className="mt-12 space-y-5">
+        <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              Before you ask
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">Common questions</h2>
+          </motion.div>
+          <motion.div {...fadeUp} className="mt-12 space-y-4">
             {FAQS.map((f, i) => (
-              <motion.div
-                key={f.q}
-                {...fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.04 }}
-                className="rounded-lg border bg-card p-6 shadow-sm"
-              >
-                <h3 className="font-semibold">{f.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-              </motion.div>
+              <FaqItem key={f.q} q={f.q} a={f.a} defaultOpen={i === 0} />
             ))}
-          </div>
+          </motion.div>
           <motion.div {...fadeUp} className="mt-12 text-center">
             <Link href="/contact">
               <Button size="lg">
-                Start the Conversation <ArrowRight className="h-4 w-4" />
+                Start the Conversation <IconArrow />
               </Button>
             </Link>
           </motion.div>

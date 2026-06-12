@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { insertInquirySchema, type InsertInquiry, PRACTICE_TYPES, INTEREST_AREAS } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { Button, Input, Textarea, Select, Label, Card, FieldError } from "@/components/ui";
+import { IconCheck } from "@/components/Icons";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -38,12 +39,14 @@ export default function Contact() {
   if (submitted) {
     return (
       <section className="py-24 md:py-32">
-        <div className="mx-auto max-w-xl px-4 text-center sm:px-6">
-          <CheckCircle2 className="mx-auto h-14 w-14 text-teal" />
-          <h1 className="mt-6 text-3xl font-bold tracking-tight">Inquiry Received</h1>
-          <p className="mt-4 text-muted-foreground">
+        <div className="mx-auto max-w-xl px-5 text-center sm:px-6">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent text-teal-dark">
+            <IconCheck className="h-8 w-8" />
+          </span>
+          <h1 className="mt-7 font-display text-3xl tracking-tight">Inquiry received</h1>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             Thank you for your interest in partnering with 2911Rx. A member of our team will
-            reach out shortly to schedule your partnership consultation.
+            reach out shortly to schedule your consultation and answer your questions.
           </p>
         </div>
       </section>
@@ -52,29 +55,33 @@ export default function Contact() {
 
   return (
     <>
-      <section className="bg-navy py-16 text-white md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="hero-surface relative overflow-hidden py-16 text-white md:py-20">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-teal-light">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
               Become a Partner
             </p>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Request Information</h1>
-            <p className="mt-4 max-w-2xl text-lg text-white/75">
-              Tell us about your practice and what you're looking to build. We'll cover
-              therapies, pricing, onboarding, and fulfillment in your consultation.
+            <h1 className="font-display text-4xl tracking-tight md:text-[3.4rem] md:leading-[1.05]">
+              Request information
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+              Tell us about your practice and what you want to build. We will cover therapies,
+              pricing, onboarding, and fulfillment in your consultation. Most partners hear
+              back within one business day.
             </p>
           </motion.div>
         </div>
       </section>
 
       <section className="py-16 md:py-20">
-        <div className="mx-auto max-w-2xl px-4 sm:px-6">
-          <Card className="p-8">
+        <div className="mx-auto max-w-2xl px-5 sm:px-6 lg:px-8">
+          <Card className="p-7 shadow-[0_20px_60px_-30px_hsl(214_45%_11%/0.25)] sm:p-9">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -129,7 +136,7 @@ export default function Contact() {
                 <Label htmlFor="message">Tell Us About Your Goals</Label>
                 <Textarea
                   id="message"
-                  placeholder="Patient volume, programs you want to offer, timeline — anything that helps us prepare for your consultation."
+                  placeholder="Patient volume, programs you want to offer, timeline, and anything else that helps us prepare for your consultation."
                   {...form.register("message")}
                 />
               </div>

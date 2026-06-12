@@ -41,15 +41,16 @@ export default {
         },
         ring: "hsl(var(--ring) / <alpha-value>)",
         navy: {
-          DEFAULT: "hsl(217 52% 12%)",
-          light: "hsl(217 45% 18%)",
-          lighter: "hsl(217 40% 24%)",
+          DEFAULT: "hsl(214 50% 10%)",
+          light: "hsl(214 42% 15%)",
+          lighter: "hsl(214 36% 22%)",
         },
         teal: {
-          DEFAULT: "hsl(174 72% 41%)",
-          light: "hsl(174 65% 51%)",
-          dark: "hsl(174 80% 32%)",
+          DEFAULT: "hsl(172 70% 29%)",
+          light: "hsl(170 55% 52%)",
+          dark: "hsl(173 75% 22%)",
         },
+        ivory: "hsl(40 30% 98%)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

@@ -11,15 +11,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       ref={ref}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-        variant === "primary" && "bg-teal text-white hover:bg-teal-dark shadow-sm",
+        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
+        variant === "primary" && "bg-teal text-white shadow-sm hover:bg-teal-dark hover:shadow-md",
         variant === "secondary" && "bg-navy text-white hover:bg-navy-light",
-        variant === "outline" && "border border-border bg-transparent hover:bg-muted",
+        variant === "outline" && "border border-border bg-transparent hover:border-foreground/30 hover:bg-muted",
         variant === "ghost" && "hover:bg-muted",
-        variant === "light" && "bg-white text-navy hover:bg-white/90",
+        variant === "light" && "bg-white text-navy shadow-sm hover:bg-white/90",
         size === "sm" && "h-9 px-4 text-sm",
         size === "md" && "h-11 px-6 text-sm",
-        size === "lg" && "h-12 px-8 text-base",
+        size === "lg" && "h-12 px-7 text-base",
         className,
       )}
       {...props}
@@ -33,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
     <input
       ref={ref}
       className={cn(
-        "h-11 w-full rounded-md border border-input bg-white px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "h-11 w-full rounded-lg border border-input bg-white px-3.5 text-sm transition-colors placeholder:text-muted-foreground focus-visible:border-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
         className,
       )}
       {...props}
@@ -47,7 +47,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
     <textarea
       ref={ref}
       className={cn(
-        "min-h-28 w-full rounded-md border border-input bg-white px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "min-h-28 w-full rounded-lg border border-input bg-white px-3.5 py-2.5 text-sm transition-colors placeholder:text-muted-foreground focus-visible:border-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
         className,
       )}
       {...props}
@@ -61,7 +61,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
     <select
       ref={ref}
       className={cn(
-        "h-11 w-full rounded-md border border-input bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "h-11 w-full cursor-pointer rounded-lg border border-input bg-white px-3.5 text-sm transition-colors focus-visible:border-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
         className,
       )}
       {...props}

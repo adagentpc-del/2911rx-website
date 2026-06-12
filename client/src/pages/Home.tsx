@@ -1,55 +1,55 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import {
-  ShieldCheck,
-  TrendingUp,
-  Workflow,
-  Handshake,
-  FlaskConical,
-  Activity,
-  Layers,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
 import { Button } from "@/components/ui";
+import {
+  IconVial,
+  IconMetabolic,
+  IconPeptide,
+  IconSystems,
+  IconShield,
+  IconHandshake,
+  IconRecurring,
+  IconArrow,
+  IconCheck,
+} from "@/components/Icons";
 
 const fadeUp = {
-  initial: { opacity: 0, y: 18 },
+  initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
 const PILLARS = [
   {
-    icon: FlaskConical,
+    icon: IconVial,
     title: "GLP-1 Therapy Programs",
-    text: "Structured GLP-1 wellness programs delivered through licensed providers and trusted pharmacy relationships — built for consistency, quality, and patient satisfaction.",
+    text: "Structured GLP-1 wellness programs delivered through licensed providers and trusted pharmacy relationships. Built for consistency, quality, and patient satisfaction.",
   },
   {
-    icon: Activity,
+    icon: IconMetabolic,
     title: "Metabolic Optimization",
-    text: "Continuity-based metabolic optimization programs that position your practice for long-term patient outcomes and recurring wellness revenue.",
+    text: "Continuity-based metabolic programs that position your practice for lasting patient outcomes and predictable, recurring wellness revenue.",
   },
   {
-    icon: Layers,
+    icon: IconPeptide,
     title: "Peptide Wellness Support",
-    text: "Provider-directed peptide wellness support backed by reliable sourcing, professional education, and structured clinical workflows.",
+    text: "Provider-directed peptide wellness support, backed by reliable sourcing, professional education, and structured clinical workflows.",
   },
   {
-    icon: Workflow,
+    icon: IconSystems,
     title: "Operational Partnership Systems",
-    text: "Onboarding, fulfillment coordination, and operational support systems that remove friction so your team can focus on patients — not logistics.",
+    text: "Onboarding, fulfillment coordination, and operational support that remove friction, so your team can focus on patients instead of logistics.",
   },
 ];
 
 const DIFFERENTIATORS = [
-  "High-quality products through licensed pharmacy relationships",
-  "Efficient, consistent execution — every order, every time",
-  "Structured onboarding for new provider partners",
-  "Dedicated operational support, not just transactions",
-  "Professional, transparent communication",
-  "Premium positioning your patients can trust",
+  "High-quality therapies through licensed pharmacy relationships",
+  "Efficient, consistent execution on every order",
+  "Structured onboarding for every new provider partner",
+  "Dedicated operational support, not one-off transactions",
+  "Clear, professional, transparent communication",
+  "Premium positioning your patients recognize and trust",
 ];
 
 const AUDIENCES = [
@@ -61,71 +61,80 @@ const AUDIENCES = [
   "Longevity Practices",
 ];
 
+const TRUST = [
+  { icon: IconShield, label: "Trusted", text: "Licensed provider and pharmacy relationships" },
+  { icon: IconHandshake, label: "Professional", text: "Structured onboarding and dedicated support" },
+  { icon: IconRecurring, label: "Advanced", text: "Scalable, recurring wellness infrastructure" },
+];
+
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy text-white">
-        <div className="grid-glow absolute inset-0" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32">
+      <section className="hero-surface relative overflow-hidden text-white">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-6 md:pb-32 md:pt-28 lg:px-8">
           <motion.div {...fadeUp} className="max-w-3xl">
-            <p className="mb-5 inline-block rounded-full border border-teal/40 bg-teal/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-light">
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/30 bg-teal/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-light" />
               For Licensed Healthcare Providers
             </p>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-6xl">
-              The Wellness Partnership Platform Built for{" "}
-              <span className="text-teal-light">Providers</span>
+            <h1 className="font-display text-[2.6rem] leading-[1.05] tracking-tight sm:text-6xl md:text-[4.25rem]">
+              Build a wellness program your patients{" "}
+              <span className="text-teal-light">stay enrolled in.</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
-              2911Rx is a premium provider-focused wellness platform specializing in GLP-1
-              therapies, metabolic optimization, peptide wellness support, and operational
-              partnership systems — through licensed provider and pharmacy relationships.
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/70">
+              2911Rx gives licensed providers the GLP-1 therapies, metabolic optimization,
+              and peptide wellness programs to launch fast, plus the pharmacy relationships
+              and operational support to scale recurring revenue with confidence.
             </p>
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Link href="/contact">
-                <Button size="lg">
-                  Request Partnership Information <ArrowRight className="h-4 w-4" />
+                <Button size="lg" className="w-full sm:w-auto">
+                  Request Partnership Information <IconArrow />
                 </Button>
               </Link>
               <Link href="/how-it-works">
-                <Button size="lg" variant="light">
+                <Button size="lg" variant="light" className="w-full sm:w-auto">
                   See How It Works
                 </Button>
               </Link>
             </div>
+            <p className="mt-5 text-sm text-white/45">
+              No cost to explore. For licensed providers and wellness organizations.
+            </p>
           </motion.div>
+
           <motion.div
             {...fadeUp}
-            transition={{ duration: 0.5, delay: 0.15 }}
+            transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3"
           >
-            {[
-              { icon: ShieldCheck, label: "Trusted", text: "Licensed provider & pharmacy relationships" },
-              { icon: Handshake, label: "Professional", text: "Structured onboarding & dedicated support" },
-              { icon: TrendingUp, label: "Advanced", text: "Scalable recurring wellness infrastructure" },
-            ].map((item) => (
+            {TRUST.map((item) => (
               <div
                 key={item.label}
-                className="rounded-lg border border-white/10 bg-white/5 p-5 backdrop-blur"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
               >
-                <item.icon className="mb-3 h-6 w-6 text-teal-light" />
-                <p className="font-display text-lg font-semibold">{item.label}</p>
-                <p className="mt-1 text-sm text-white/65">{item.text}</p>
+                <span className="icon-tile icon-tile-dark mb-4" style={{ ["--ic-deep" as string]: "hsl(170 50% 70%)", ["--ic-accent" as string]: "hsl(170 60% 55%)" }}>
+                  <item.icon />
+                </span>
+                <p className="font-display text-lg font-semibold text-white">{item.label}</p>
+                <p className="mt-1 text-sm leading-snug text-white/55">{item.text}</p>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Who we serve */}
-      <section className="border-b bg-white py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Built for wellness-focused practices
+      {/* Audience marquee */}
+      <section className="border-b border-border/70 bg-white py-9">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Trusted by wellness-focused practices
           </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
             {AUDIENCES.map((a) => (
-              <span key={a} className="font-display text-sm font-semibold text-navy/70">
+              <span key={a} className="font-display text-base font-medium text-navy/55">
                 {a}
               </span>
             ))}
@@ -135,14 +144,17 @@ export default function Home() {
 
       {/* Pillars */}
       <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              One Platform. Complete Wellness Infrastructure.
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              The Platform
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.6rem]">
+              Everything you need to launch and scale
             </h2>
-            <p className="mt-4 text-muted-foreground">
-              Everything your practice needs to launch and scale provider-directed wellness
-              programs — without building the operational backbone yourself.
+            <p className="mt-4 text-lg text-muted-foreground">
+              One partner for the therapies, the pharmacy relationships, and the operations
+              behind a wellness program that actually grows.
             </p>
           </motion.div>
           <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -150,47 +162,60 @@ export default function Home() {
               <motion.div
                 key={p.title}
                 {...fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="rounded-lg border bg-card p-7 shadow-sm transition-shadow hover:shadow-md"
+                transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className="group rounded-2xl border border-border/80 bg-card p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_12px_40px_-12px_hsl(214_45%_11%/0.16)]"
               >
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-md bg-accent">
-                  <p.icon className="h-6 w-6 text-teal-dark" />
-                </div>
+                <span className="icon-tile mb-5">
+                  <p.icon />
+                </span>
                 <h3 className="text-xl font-semibold">{p.title}</h3>
-                <p className="mt-2 leading-relaxed text-muted-foreground">{p.text}</p>
+                <p className="mt-2.5 leading-relaxed text-muted-foreground">{p.text}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why 2911Rx */}
-      <section className="bg-navy py-20 text-white md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+      {/* Differentiators */}
+      <section className="hero-surface relative overflow-hidden py-20 text-white md:py-28">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-14 lg:grid-cols-2">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Partnerships, Not Transactions
-              </h2>
-              <p className="mt-5 leading-relaxed text-white/75">
-                Most suppliers compete on price and disappear after the sale. 2911Rx is built
-                differently — around long-term provider relationships, operational support,
-                and the consistency your patients depend on. That's why providers who have
-                tried low-cost, low-reliability suppliers choose us and stay.
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
+                Why 2911Rx
               </p>
-              <div className="mt-8">
+              <h2 className="text-3xl tracking-tight text-white md:text-[2.6rem]">
+                Partnerships, not transactions
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-white/70">
+                Most suppliers compete on price and disappear after the sale. 2911Rx is built
+                around long-term provider relationships, operational support, and the
+                consistency your patients depend on. It is why providers who have been burned
+                by low-cost, low-reliability suppliers choose us and stay.
+              </p>
+              <div className="mt-9">
                 <Link href="/partnership">
                   <Button variant="light" size="lg">
-                    Explore the Partnership Program <ArrowRight className="h-4 w-4" />
+                    Explore the Partnership Program <IconArrow />
                   </Button>
                 </Link>
               </div>
             </motion.div>
-            <motion.ul {...fadeUp} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-4">
+            <motion.ul
+              {...fadeUp}
+              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-3"
+            >
               {DIFFERENTIATORS.map((d) => (
-                <li key={d} className="flex items-start gap-3 rounded-md border border-white/10 bg-white/5 p-4">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-teal-light" />
-                  <span className="text-sm text-white/85">{d}</span>
+                <li
+                  key={d}
+                  className="flex items-start gap-3.5 rounded-xl border border-white/10 bg-white/[0.04] p-4"
+                >
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal/20 text-teal-light">
+                    <IconCheck className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm leading-relaxed text-white/85">{d}</span>
                 </li>
               ))}
             </motion.ul>
@@ -198,21 +223,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Ready to Build Recurring Wellness Revenue?
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Tell us about your practice. We'll walk you through therapies, onboarding,
-              fulfillment, and partnership pricing — everything you need to make a confident decision.
+      {/* Closing CTA */}
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
+          <motion.div
+            {...fadeUp}
+            className="relative overflow-hidden rounded-3xl border border-border/80 bg-card px-8 py-14 text-center shadow-[0_24px_70px_-30px_hsl(214_45%_11%/0.25)] md:px-14"
+          >
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              Start the conversation
             </p>
-            <div className="mt-8">
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">
+              Ready to build recurring wellness revenue?
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+              Tell us about your practice. We will walk you through therapies, onboarding,
+              fulfillment, and partnership pricing, so you can make a confident decision.
+            </p>
+            <div className="mt-8 flex justify-center">
               <Link href="/contact">
                 <Button size="lg">
-                  Request Information <ArrowRight className="h-4 w-4" />
+                  Request Information <IconArrow />
                 </Button>
               </Link>
             </div>

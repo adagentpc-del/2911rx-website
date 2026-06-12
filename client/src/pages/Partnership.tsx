@@ -1,21 +1,21 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import {
-  Building2,
-  Repeat,
-  Boxes,
-  HeartHandshake,
-  LineChart,
-  GraduationCap,
-  ArrowRight,
-} from "lucide-react";
 import { Button } from "@/components/ui";
+import {
+  IconRecurring,
+  IconFulfillment,
+  IconSimplicity,
+  IconPositioning,
+  IconEducation,
+  IconBuilding,
+  IconArrow,
+} from "@/components/Icons";
 
 const fadeUp = {
-  initial: { opacity: 0, y: 18 },
+  initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
 const PARTNER_TYPES = [
@@ -29,58 +29,59 @@ const PARTNER_TYPES = [
 
 const BENEFITS = [
   {
-    icon: Repeat,
+    icon: IconRecurring,
     title: "Recurring Revenue Infrastructure",
-    text: "Continuity-based wellness programs designed to generate predictable, recurring revenue for your practice — not one-off transactions.",
+    text: "Continuity-based wellness programs designed to generate predictable, recurring revenue for your practice, not one-off transactions.",
   },
   {
-    icon: Boxes,
+    icon: IconFulfillment,
     title: "Reliable Fulfillment",
     text: "A trusted pharmacy relationship with consistent execution. Your patients receive what they expect, when they expect it.",
   },
   {
-    icon: HeartHandshake,
+    icon: IconSimplicity,
     title: "Operational Simplicity",
-    text: "We handle the operational complexity — onboarding, ordering workflows, and support — so scaling doesn't mean more administrative burden.",
+    text: "We handle the operational complexity, from onboarding to ordering workflows, so scaling never means more administrative burden.",
   },
   {
-    icon: LineChart,
-    title: "Scalable Wellness Positioning",
-    text: "Premium, professional positioning that strengthens patient trust and supports long-term program retention.",
+    icon: IconPositioning,
+    title: "Premium Wellness Positioning",
+    text: "Professional positioning that strengthens patient trust and supports long-term program retention.",
   },
   {
-    icon: GraduationCap,
-    title: "Provider Education & Support",
+    icon: IconEducation,
+    title: "Provider Education and Support",
     text: "Clear communication, structured onboarding, and ongoing education so your team is confident from day one.",
   },
   {
-    icon: Building2,
+    icon: IconBuilding,
     title: "Built Around Your Practice",
-    text: "Partnership structures that fit your model — whether you're a single-location med spa or a multi-state telehealth operator.",
+    text: "Partnership structures that fit your model, whether you are a single-location med spa or a multi-state telehealth operator.",
   },
 ];
 
 export default function Partnership() {
   return (
     <>
-      <section className="bg-navy py-20 text-white md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="hero-surface relative overflow-hidden py-20 text-white md:py-24">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="max-w-3xl">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-teal-light">
-              Wholesale & Distribution Partnership
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
+              Wholesale and Distribution Partnership
             </p>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-              Scale Your Practice Through Partnership
+            <h1 className="font-display text-4xl tracking-tight md:text-[3.4rem] md:leading-[1.05]">
+              Scale your practice through partnership
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
               Our partnership program exists for one reason: to help wellness-focused
-              providers scale through long-term recurring operational relationships — with
-              the consistency, support, and professionalism your patients deserve.
+              providers grow through long-term, recurring relationships, with the
+              consistency, support, and professionalism your patients deserve.
             </p>
             <div className="mt-8">
               <Link href="/contact">
                 <Button size="lg">
-                  Apply for Partnership <ArrowRight className="h-4 w-4" />
+                  Apply for Partnership <IconArrow />
                 </Button>
               </Link>
             </div>
@@ -88,14 +89,14 @@ export default function Partnership() {
         </div>
       </section>
 
-      <section className="border-b bg-white py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <section className="border-b border-border/70 bg-white py-9">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Ideal partners
           </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
             {PARTNER_TYPES.map((p) => (
-              <span key={p} className="font-display text-sm font-semibold text-navy/70">
+              <span key={p} className="font-display text-base font-medium text-navy/55">
                 {p}
               </span>
             ))}
@@ -104,14 +105,17 @@ export default function Partnership() {
       </section>
 
       <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              What Partnership Solves
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              What you get
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.6rem]">
+              What partnership solves
             </h2>
-            <p className="mt-4 text-muted-foreground">
-              Operational simplicity, consistency, scalable wellness infrastructure, and a
-              trusted pharmacy relationship — in one program.
+            <p className="mt-4 text-lg text-muted-foreground">
+              Operational simplicity, consistency, scalable infrastructure, and a trusted
+              pharmacy relationship, in one program.
             </p>
           </motion.div>
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -119,14 +123,14 @@ export default function Partnership() {
               <motion.div
                 key={b.title}
                 {...fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="rounded-lg border bg-card p-6 shadow-sm"
+                transition={{ duration: 0.55, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                className="group rounded-2xl border border-border/80 bg-card p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_12px_40px_-12px_hsl(214_45%_11%/0.16)]"
               >
-                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-md bg-accent">
-                  <b.icon className="h-5 w-5 text-teal-dark" />
-                </div>
-                <h3 className="font-semibold">{b.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.text}</p>
+                <span className="icon-tile mb-5">
+                  <b.icon />
+                </span>
+                <h3 className="text-lg font-semibold">{b.title}</h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{b.text}</p>
               </motion.div>
             ))}
           </div>
@@ -134,22 +138,25 @@ export default function Partnership() {
       </section>
 
       <section className="bg-muted py-20 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <motion.div {...fadeUp}>
-            <h2 className="text-center text-3xl font-bold tracking-tight md:text-4xl">
-              A Note on Pricing
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-center leading-relaxed text-muted-foreground">
-              Pricing matters — and ours is competitive. But the partners who succeed with
-              2911Rx understand that price alone doesn't build a wellness program. Reliability,
-              operational support, and long-term consistency are what keep patients enrolled
-              and revenue recurring. If you've been burned by low-cost, low-reliability
-              suppliers before, you already know the difference.
+        <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              On pricing
             </p>
-            <div className="mt-8 text-center">
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">
+              Competitive pricing is the floor, not the pitch
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Our pricing is competitive. But the partners who succeed with 2911Rx understand
+              that price alone does not build a wellness program. Reliability, operational
+              support, and long-term consistency are what keep patients enrolled and revenue
+              recurring. If a low-cost, low-reliability supplier has burned you before, you
+              already know the difference.
+            </p>
+            <div className="mt-8 flex justify-center">
               <Link href="/contact">
                 <Button size="lg">
-                  Request Partnership Pricing <ArrowRight className="h-4 w-4" />
+                  Request Partnership Pricing <IconArrow />
                 </Button>
               </Link>
             </div>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ExternalLink } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn, PORTAL_URL } from "@/lib/utils";
 import { Button } from "@/components/ui";
+import { IconExternal } from "@/components/Icons";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -13,7 +14,7 @@ const NAV_LINKS = [
 
 export function Logo({ dark = false }: { dark?: boolean }) {
   return (
-    <Link href="/" className="flex items-baseline gap-0.5 font-display text-2xl font-bold tracking-tight">
+    <Link href="/" className="flex items-baseline gap-px font-display text-[1.65rem] font-semibold tracking-tight">
       <span className={dark ? "text-white" : "text-navy"}>2911</span>
       <span className="text-teal">Rx</span>
     </Link>
@@ -25,17 +26,17 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-ivory/80 backdrop-blur-md">
+      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <Logo />
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-teal",
-                location === l.href ? "text-teal" : "text-foreground/80",
+                "text-sm font-medium transition-colors hover:text-teal-dark",
+                location === l.href ? "text-teal-dark" : "text-foreground/70",
               )}
             >
               {l.label}
@@ -45,32 +46,42 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm">
-              Provider Ordering Portal <ExternalLink className="h-3.5 w-3.5" />
+              Provider Portal <IconExternal />
             </Button>
           </a>
           <Link href="/contact">
             <Button size="sm">Become a Partner</Button>
           </Link>
         </div>
-        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        <button
+          className="-mr-1 rounded-md p-2 md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+          aria-expanded={open}
+        >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       {open && (
-        <div className="border-t bg-white px-4 py-4 md:hidden">
-          <nav className="flex flex-col gap-3">
+        <div className="border-t border-border/70 bg-ivory px-5 py-4 md:hidden">
+          <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="py-1 text-sm font-medium"
+                className="rounded-md px-2 py-2.5 text-sm font-medium hover:bg-muted"
               >
                 {l.label}
               </Link>
             ))}
-            <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="py-1 text-sm font-medium">
-              Provider Ordering Portal ↗
+            <a
+              href={PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-md px-2 py-2.5 text-sm font-medium hover:bg-muted"
+            >
+              Provider Portal <IconExternal />
             </a>
             <Link href="/contact" onClick={() => setOpen(false)}>
               <Button className="mt-2 w-full">Become a Partner</Button>
@@ -85,46 +96,46 @@ export function Header() {
 export function Footer() {
   return (
     <footer className="bg-navy text-white">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <Logo dark />
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/65">
               A premium provider-focused wellness platform specializing in GLP-1 therapies,
               metabolic optimization, peptide wellness support, and operational partnership
-              systems — built on licensed provider and pharmacy relationships.
+              systems, built on licensed provider and pharmacy relationships.
             </p>
           </div>
           <div>
-            <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/50">Explore</h4>
-            <ul className="space-y-2 text-sm text-white/80">
-              <li><Link href="/partnership" className="hover:text-teal-light">Partnership Program</Link></li>
-              <li><Link href="/how-it-works" className="hover:text-teal-light">How It Works</Link></li>
-              <li><Link href="/about" className="hover:text-teal-light">About 2911Rx</Link></li>
-              <li><Link href="/contact" className="hover:text-teal-light">Request Information</Link></li>
+            <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Explore</h4>
+            <ul className="space-y-2.5 text-sm text-white/75">
+              <li><Link href="/partnership" className="transition-colors hover:text-teal-light">Partnership Program</Link></li>
+              <li><Link href="/how-it-works" className="transition-colors hover:text-teal-light">How It Works</Link></li>
+              <li><Link href="/about" className="transition-colors hover:text-teal-light">About 2911Rx</Link></li>
+              <li><Link href="/contact" className="transition-colors hover:text-teal-light">Request Information</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/50">Providers</h4>
-            <ul className="space-y-2 text-sm text-white/80">
+            <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Providers</h4>
+            <ul className="space-y-2.5 text-sm text-white/75">
               <li>
-                <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="hover:text-teal-light">
-                  Provider Ordering Portal ↗
+                <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 transition-colors hover:text-teal-light">
+                  Provider Ordering Portal <IconExternal />
                 </a>
               </li>
-              <li><Link href="/contact" className="hover:text-teal-light">Become a Partner</Link></li>
+              <li><Link href="/contact" className="transition-colors hover:text-teal-light">Become a Partner</Link></li>
             </ul>
           </div>
         </div>
-        <div className="mt-12 border-t border-white/10 pt-6">
-          <p className="text-xs leading-relaxed text-white/50">
+        <div className="mt-14 border-t border-white/10 pt-7">
+          <p className="max-w-4xl text-xs leading-relaxed text-white/45">
             2911Rx partners exclusively with licensed healthcare providers and pharmacy
             partners. Therapies and wellness programs are available only through licensed
             providers operating within their scope of practice. This website is intended for
-            licensed healthcare professionals and wellness organizations; it does not provide
+            licensed healthcare professionals and wellness organizations. It does not provide
             medical advice and does not offer products for direct purchase by patients or consumers.
           </p>
-          <p className="mt-4 text-xs text-white/40">
+          <p className="mt-4 text-xs text-white/35">
             © {new Date().getFullYear()} 2911Rx. All rights reserved.
           </p>
         </div>
