@@ -1,7 +1,9 @@
+import { lazy, Suspense } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import HeroArt from "@/components/HeroArt";
+const Hero3D = lazy(() => import("@/components/Hero3D"));
 import {
   IconVial,
   IconMetabolic,
@@ -115,7 +117,9 @@ export default function Home() {
             </motion.div>
 
             <div className="hidden lg:block">
-              <HeroArt />
+              <Suspense fallback={<HeroArt />}>
+                <Hero3D />
+              </Suspense>
             </div>
           </div>
 
@@ -129,7 +133,7 @@ export default function Home() {
                 key={item.label}
                 className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
               >
-                <span className="icon-tile icon-tile-dark mb-4" style={{ ["--ic-deep" as string]: "hsl(170 50% 70%)", ["--ic-accent" as string]: "hsl(170 60% 55%)" }}>
+                <span className="icon-tile icon-tile-dark mb-4">
                   <item.icon />
                 </span>
                 <p className="font-display text-lg font-semibold text-white">{item.label}</p>
