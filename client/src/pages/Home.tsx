@@ -20,6 +20,13 @@ const fadeUp = {
   transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
+// Above-the-fold: animate on mount, not on scroll (avoids a blank hero on first paint)
+const fadeUpOnLoad = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+};
+
 const PILLARS = [
   {
     icon: IconVial,
@@ -74,7 +81,7 @@ export default function Home() {
       <section className="hero-surface relative overflow-hidden text-white">
         <div className="hero-grid absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-6 md:pb-32 md:pt-28 lg:px-8">
-          <motion.div {...fadeUp} className="max-w-3xl">
+          <motion.div {...fadeUpOnLoad} className="max-w-3xl">
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/30 bg-teal/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
               <span className="h-1.5 w-1.5 rounded-full bg-teal-light" />
               For Licensed Healthcare Providers
@@ -106,7 +113,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            {...fadeUp}
+            {...fadeUpOnLoad}
             transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3"
           >

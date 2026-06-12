@@ -18,6 +18,12 @@ const fadeUp = {
   transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
+const fadeUpOnLoad = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+};
+
 const PARTNER_TYPES = [
   "Wellness Clinics",
   "Med Spas",
@@ -66,7 +72,7 @@ export default function Partnership() {
       <section className="hero-surface relative overflow-hidden py-20 text-white md:py-24">
         <div className="hero-grid absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          <motion.div {...fadeUp} className="max-w-3xl">
+          <motion.div {...fadeUpOnLoad} className="max-w-3xl">
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
               Wholesale and Distribution Partnership
             </p>
