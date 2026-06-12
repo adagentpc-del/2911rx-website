@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<string, string> = {
   new: "bg-teal/10 text-teal-dark border-teal/30",
-  contacted: "bg-blue-50 text-blue-700 border-blue-200",
+  contacted: "bg-sky-50 text-sky-700 border-sky-200",
   qualified: "bg-amber-50 text-amber-700 border-amber-200",
-  closed: "bg-gray-100 text-gray-600 border-gray-200",
+  closed: "bg-slate-100 text-slate-500 border-slate-200",
 };
 
 export default function AdminDashboard() {
@@ -49,58 +49,76 @@ export default function AdminDashboard() {
 
   if (meLoading || !me?.isAdmin) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-muted">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
+  const list = inquiries ?? [];
+  const stats = [
+    { label: "Total", value: list.length },
+    { label: "New", value: list.filter((i) => i.status === "new").length },
+    { label: "Qualified", value: list.filter((i) => i.status === "qualified").length },
+  ];
+
   return (
     <div className="min-h-screen bg-muted">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-4">
-            <Logo />
-            <span className="rounded-full border bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+      <header className="hero-surface text-white">
+        <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between px-5 sm:px-6">
+          <div className="flex items-center gap-3">
+            <Logo dark />
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
               Admin
             </span>
           </div>
-          <Button variant="outline" size="sm" onClick={logout}>
+          <Button variant="light" size="sm" onClick={logout}>
             <LogOut className="h-4 w-4" /> Sign Out
           </Button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Partnership Inquiries</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {inquiries?.length ?? 0} total inquiries
-            </p>
-          </div>
+      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6">
+        <div className="mb-8">
+          <h1 className="font-display text-3xl tracking-tight">Partnership Inquiries</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Leads submitted through the website, newest first.
+          </p>
+        </div>
+
+        <div className="mb-8 grid grid-cols-3 gap-4">
+          {stats.map((s) => (
+            <Card key={s.label} className="p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                {s.label}
+              </p>
+              <p className="mt-1.5 font-display text-3xl font-semibold text-navy">{s.value}</p>
+            </Card>
+          ))}
         </div>
 
         {isLoading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
-        ) : !inquiries?.length ? (
+        ) : !list.length ? (
           <Card className="flex flex-col items-center py-16 text-center">
-            <Inbox className="h-10 w-10 text-muted-foreground/50" />
-            <h2 className="mt-4 font-semibold">No inquiries yet</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              New partnership inquiries from the website will appear here.
+            <span className="icon-tile mb-4">
+              <Inbox className="h-6 w-6 text-teal-dark" />
+            </span>
+            <h2 className="font-display text-lg font-semibold">No inquiries yet</h2>
+            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+              New partnership inquiries from the website will appear here automatically.
             </p>
           </Card>
         ) : (
           <div className="space-y-4">
-            {inquiries.map((inq) => (
-              <Card key={inq.id} className="p-5">
+            {list.map((inq) => (
+              <Card key={inq.id} className="p-6 transition-shadow hover:shadow-md">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="font-semibold">{inq.name}</h3>
+                      <h3 className="font-display text-lg font-semibold">{inq.name}</h3>
                       <span
                         className={cn(
                           "rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize",
@@ -113,19 +131,21 @@ export default function AdminDashboard() {
                         {new Date(inq.createdAt).toLocaleString()}
                       </span>
                     </div>
-                    <p className="mt-1 text-sm font-medium text-foreground/80">
-                      {inq.organization} · {inq.practiceType}
+                    <p className="mt-1.5 text-sm font-medium text-foreground/80">
+                      {inq.organization} &middot; {inq.practiceType}
                       {inq.state ? ` · ${inq.state}` : ""}
                     </p>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      <a href={`mailto:${inq.email}`} className="text-teal-dark hover:underline">{inq.email}</a>
+                      <a href={`mailto:${inq.email}`} className="text-teal-dark hover:underline">
+                        {inq.email}
+                      </a>
                       {inq.phone ? ` · ${inq.phone}` : ""}
                     </p>
-                    <p className="mt-2 text-sm">
+                    <p className="mt-2.5 text-sm">
                       <span className="font-medium">Interest:</span> {inq.interest}
                     </p>
                     {inq.message && (
-                      <p className="mt-2 rounded-md bg-muted p-3 text-sm text-muted-foreground">
+                      <p className="mt-2.5 rounded-lg border border-border/70 bg-muted/60 p-3 text-sm leading-relaxed text-muted-foreground">
                         {inq.message}
                       </p>
                     )}
@@ -144,6 +164,7 @@ export default function AdminDashboard() {
                     <Button
                       variant="ghost"
                       size="sm"
+                      aria-label={`Delete inquiry from ${inq.name}`}
                       onClick={() => {
                         if (confirm(`Delete inquiry from ${inq.name}?`)) deleteMutation.mutate(inq.id);
                       }}

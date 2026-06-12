@@ -27,9 +27,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-navy px-4">
-      <Card className="w-full max-w-sm p-8">
-        <div className="mb-6 flex flex-col items-center gap-3">
+    <div className="hero-surface relative flex min-h-screen items-center justify-center overflow-hidden px-5">
+      <div className="hero-grid absolute inset-0" aria-hidden />
+      <Card className="relative w-full max-w-sm p-8 shadow-[0_30px_80px_-30px_hsl(214_60%_4%/0.6)]">
+        <div className="mb-7 flex flex-col items-center gap-3">
           <Logo />
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Lock className="h-3.5 w-3.5" /> Admin Access
