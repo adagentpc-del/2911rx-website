@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
+import HeroArt from "@/components/HeroArt";
 import {
   IconVial,
   IconMetabolic,
@@ -81,36 +82,42 @@ export default function Home() {
       <section className="hero-surface relative overflow-hidden text-white">
         <div className="hero-grid absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-6 md:pb-32 md:pt-28 lg:px-8">
-          <motion.div {...fadeUpOnLoad} className="max-w-3xl">
-            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/30 bg-teal/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-light" />
-              For Licensed Healthcare Providers
-            </p>
-            <h1 className="font-display text-[2.6rem] leading-[1.05] tracking-tight sm:text-6xl md:text-[4.25rem]">
-              Build a wellness program your patients{" "}
-              <span className="text-teal-light">stay enrolled in.</span>
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/70">
-              2911Rx gives licensed providers the GLP-1 therapies, metabolic optimization,
-              and peptide wellness programs to launch fast, plus the pharmacy relationships
-              and operational support to scale recurring revenue with confidence.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <Link href="/contact">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Request Partnership Information <IconArrow />
-                </Button>
-              </Link>
-              <Link href="/how-it-works">
-                <Button size="lg" variant="light" className="w-full sm:w-auto">
-                  See How It Works
-                </Button>
-              </Link>
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            <motion.div {...fadeUpOnLoad} className="max-w-2xl">
+              <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/30 bg-teal/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
+                <span className="h-1.5 w-1.5 rounded-full bg-teal-light" />
+                For Licensed Healthcare Providers
+              </p>
+              <h1 className="font-display text-[2.6rem] leading-[1.05] tracking-tight sm:text-6xl md:text-[3.9rem]">
+                Build a wellness program your patients{" "}
+                <span className="text-teal-light">stay enrolled in.</span>
+              </h1>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/70">
+                2911Rx gives licensed providers the GLP-1 therapies, metabolic optimization,
+                and peptide wellness programs to launch fast, plus the pharmacy relationships
+                and operational support to scale recurring revenue with confidence.
+              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                <Link href="/contact">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Request Partnership Information <IconArrow />
+                  </Button>
+                </Link>
+                <Link href="/how-it-works">
+                  <Button size="lg" variant="light" className="w-full sm:w-auto">
+                    See How It Works
+                  </Button>
+                </Link>
+              </div>
+              <p className="mt-5 text-sm text-white/45">
+                No cost to explore. For licensed providers and wellness organizations.
+              </p>
+            </motion.div>
+
+            <div className="hidden lg:block">
+              <HeroArt />
             </div>
-            <p className="mt-5 text-sm text-white/45">
-              No cost to explore. For licensed providers and wellness organizations.
-            </p>
-          </motion.div>
+          </div>
 
           <motion.div
             {...fadeUpOnLoad}
