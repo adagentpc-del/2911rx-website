@@ -17,6 +17,7 @@ import {
   IconExternal,
 } from "@/components/Icons";
 import { StatBand, GrowthChart, DonutChart, CheckList } from "@/components/DataViz";
+import { LifestyleBand } from "@/components/Photo";
 
 const STATS = [
   { value: 5, suffix: " steps", label: "From first call to launched program" },
@@ -216,6 +217,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Lifestyle band: the patients */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <LifestyleBand
+            id="photo-1778506200867-5fe7380cbc4c"
+            alt="A group of active, smiling adults outdoors together"
+            eyebrow="Why it matters"
+            title="Programs your patients stay active for"
+            body="Continuity-based wellness only works when patients stay engaged. 2911Rx helps you build programs people actually stick with, backed by reliable fulfillment and a partner that has your team's back."
+            reverse
+          />
+        </div>
+      </section>
+
       {/* Growth + program mix (illustrative) */}
       <section className="bg-muted py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -301,6 +316,19 @@ export default function Home() {
             </motion.div>
             <CheckList items={DIFFERENTIATORS} tone="light" />
           </div>
+        </div>
+      </section>
+
+      {/* Lifestyle band: the relationship */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <LifestyleBand
+            id="photo-1761393268200-6ae672b5556a"
+            alt="A middle-aged couple laughing together outdoors"
+            eyebrow="The relationship"
+            title="Partnerships your patients can feel"
+            body="When providers have consistent therapies and dependable support behind them, patients notice. That trust is what turns a first visit into a lasting wellness relationship and recurring revenue for your practice."
+          />
         </div>
       </section>
 

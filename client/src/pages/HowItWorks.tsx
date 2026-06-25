@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { IconArrow } from "@/components/Icons";
 import { FlowDiagram } from "@/components/DataViz";
+import { LifestyleBand } from "@/components/Photo";
 import { cn } from "@/lib/utils";
 
 const fadeUp = {
@@ -113,6 +114,19 @@ export default function HowItWorks() {
               wellness program inside your practice.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Lifestyle band */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <LifestyleBand
+            id="photo-1706806594682-9a9b01dd59fe"
+            alt="Two active adults smiling outdoors with bikes"
+            eyebrow="The payoff"
+            title="Less logistics, more time for patients"
+            body="Once you are onboarded, ordering and fulfillment run quietly in the background. Your team spends its energy on patient care while we handle the operational details."
+          />
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { IconShield, IconHandshake, IconRecurring, IconArrow } from "@/components/Icons";
+import { LifestyleBand } from "@/components/Photo";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -53,6 +54,18 @@ export default function About() {
               premium wellness partnership platform.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <LifestyleBand
+            id="photo-1591045688461-0b4ab9feedb3"
+            alt="A couple walking together outdoors on a sunny path"
+            eyebrow="Built for the long game"
+            title="A partner you can build on for years"
+            body="The best wellness programs compound over time. We focus on reliability, consistency, and support so the partnership keeps paying off long after the first order, for your practice and your patients."
+          />
         </div>
       </section>
 

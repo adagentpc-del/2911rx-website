@@ -11,6 +11,7 @@ import {
   IconArrow,
 } from "@/components/Icons";
 import { DonutChart, StatBand } from "@/components/DataViz";
+import { LifestyleBand } from "@/components/Photo";
 
 const VALUE_MIX = [
   { label: "Operational support & simplicity", value: 35 },
@@ -122,6 +123,19 @@ export default function Partnership() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <LifestyleBand
+            id="photo-1746559845100-0f5a36bfdbe6"
+            alt="A smiling, active adult during a workout"
+            eyebrow="Built around outcomes"
+            title="Healthier patients, a stronger practice"
+            body="Your patients want to look and feel their best. With dependable therapies and the operational support to deliver them consistently, you become the practice they stay with and refer."
+            reverse
+          />
         </div>
       </section>
 
