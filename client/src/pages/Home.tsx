@@ -13,8 +13,24 @@ import {
   IconHandshake,
   IconRecurring,
   IconArrow,
-  IconCheck,
 } from "@/components/Icons";
+import { StatBand, GrowthChart, DonutChart, CheckList } from "@/components/DataViz";
+
+const STATS = [
+  { value: 5, suffix: " steps", label: "From first call to launched program" },
+  { value: 3, label: "Core program lines under one partner" },
+  { value: 1, label: "Provider portal for every order" },
+  { value: 24, suffix: "/7", label: "Ordering access, on your schedule" },
+];
+
+const GROWTH = [12, 19, 28, 41, 55, 72];
+const GROWTH_LABELS = ["M1", "M2", "M3", "M4", "M5", "M6"];
+
+const PROGRAM_MIX = [
+  { label: "GLP-1 Therapy Programs", value: 45 },
+  { label: "Metabolic Optimization", value: 30 },
+  { label: "Peptide Wellness", value: 25 },
+];
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -194,6 +210,63 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Growth + program mix (illustrative) */}
+      <section className="bg-muted py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              The recurring model
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.6rem]">
+              Built for compounding, recurring revenue
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Continuity-based programs are designed to grow month over month as patients
+              stay enrolled, across a balanced mix of wellness offerings.
+            </p>
+          </motion.div>
+
+          <div className="mt-14 grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+            <motion.div
+              {...fadeUp}
+              className="rounded-3xl border border-border/80 bg-card p-6 shadow-[0_20px_60px_-30px_hsl(214_45%_11%/0.25)] md:p-8"
+            >
+              <p className="mb-1 font-display text-lg font-semibold">Program enrollment over time</p>
+              <p className="mb-5 text-sm text-muted-foreground">
+                Illustrative: the shape of a continuity-based program as patients stay enrolled.
+              </p>
+              <GrowthChart
+                data={GROWTH}
+                labels={GROWTH_LABELS}
+                tone="dark"
+                caption="Illustrative model, not a performance guarantee."
+              />
+            </motion.div>
+
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-3xl border border-border/80 bg-card p-6 shadow-[0_20px_60px_-30px_hsl(214_45%_11%/0.25)] md:p-8"
+            >
+              <p className="mb-1 font-display text-lg font-semibold">A balanced program mix</p>
+              <p className="mb-6 text-sm text-muted-foreground">
+                Three core lines, one partner behind all of them.
+              </p>
+              <DonutChart
+                segments={PROGRAM_MIX}
+                tone="dark"
+                centerTop="3"
+                centerLabel="core program lines"
+              />
+            </motion.div>
+          </div>
+
+          <motion.div {...fadeUp} className="mt-12">
+            <StatBand stats={STATS} tone="dark" />
+          </motion.div>
+        </div>
+      </section>
+
       {/* Differentiators */}
       <section className="hero-surface relative overflow-hidden py-20 text-white md:py-28">
         <div className="hero-grid absolute inset-0" aria-hidden />
@@ -220,23 +293,7 @@ export default function Home() {
                 </Link>
               </div>
             </motion.div>
-            <motion.ul
-              {...fadeUp}
-              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-3"
-            >
-              {DIFFERENTIATORS.map((d) => (
-                <li
-                  key={d}
-                  className="flex items-start gap-3.5 rounded-xl border border-white/10 bg-white/[0.04] p-4"
-                >
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal/20 text-teal-light">
-                    <IconCheck className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm leading-relaxed text-white/85">{d}</span>
-                </li>
-              ))}
-            </motion.ul>
+            <CheckList items={DIFFERENTIATORS} tone="light" />
           </div>
         </div>
       </section>

@@ -10,6 +10,21 @@ import {
   IconBuilding,
   IconArrow,
 } from "@/components/Icons";
+import { DonutChart, StatBand } from "@/components/DataViz";
+
+const VALUE_MIX = [
+  { label: "Operational support & simplicity", value: 35 },
+  { label: "Reliable fulfillment", value: 30 },
+  { label: "Recurring revenue infrastructure", value: 20 },
+  { label: "Premium positioning", value: 15 },
+];
+
+const PARTNER_STATS = [
+  { value: 6, label: "Practice types we partner with" },
+  { value: 3, label: "Core program lines to offer" },
+  { value: 5, suffix: " steps", label: "Simple onboarding to launch" },
+  { value: 1, label: "Dedicated partnership relationship" },
+];
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -140,6 +155,47 @@ export default function Partnership() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Where the value comes from (illustrative) */}
+      <section className="hero-surface relative overflow-hidden py-20 text-white md:py-28">
+        <div className="hero-grid absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <motion.div {...fadeUp}>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">
+                Where the value comes from
+              </p>
+              <h2 className="text-3xl tracking-tight text-white md:text-[2.6rem]">
+                More than a price on a product
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-white/70">
+                Partners who succeed with 2911Rx are not buying the cheapest unit. They are
+                buying operational simplicity, reliable fulfillment, and an infrastructure
+                that keeps patients enrolled and revenue recurring.
+              </p>
+            </motion.div>
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm md:p-9"
+            >
+              <DonutChart
+                segments={VALUE_MIX}
+                tone="light"
+                centerTop="100%"
+                centerLabel="partnership value"
+              />
+              <p className="mt-6 text-center text-xs text-white/45">
+                Illustrative breakdown of what partnership delivers.
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div {...fadeUp} className="mt-14">
+            <StatBand stats={PARTNER_STATS} tone="light" />
+          </motion.div>
         </div>
       </section>
 

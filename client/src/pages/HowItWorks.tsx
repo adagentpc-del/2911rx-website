@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { IconArrow } from "@/components/Icons";
+import { FlowDiagram } from "@/components/DataViz";
 import { cn } from "@/lib/utils";
 
 const fadeUp = {
@@ -115,8 +116,36 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* Animated simplicity flow */}
+      <section className="py-20 md:py-24">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="mx-auto mb-14 max-w-2xl text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              Five simple steps
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">
+              The whole path, at a glance
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Each step flows into the next, with our team handling the operational
+              complexity so your launch stays simple.
+            </p>
+          </motion.div>
+          <FlowDiagram
+            tone="dark"
+            steps={STEPS.map((s) => ({ title: s.title }))}
+          />
+        </div>
+      </section>
+
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="mb-12 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              In detail
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">Every step, explained</h2>
+          </motion.div>
           <ol className="relative space-y-5 before:absolute before:left-[1.85rem] before:top-3 before:hidden before:h-[calc(100%-2rem)] before:w-px before:bg-border sm:before:block">
             {STEPS.map((s, i) => (
               <motion.li
