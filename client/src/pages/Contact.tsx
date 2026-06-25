@@ -139,6 +139,9 @@ export default function Contact() {
                   placeholder="Patient volume, programs you want to offer, timeline, and anything else that helps us prepare for your consultation."
                   {...form.register("message")}
                 />
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  Please do not include any patient health information.
+                </p>
               </div>
               {serverError && <p className="text-sm text-destructive">{serverError}</p>}
               <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>

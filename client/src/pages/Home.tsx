@@ -63,7 +63,7 @@ const PILLARS = [
   {
     icon: IconPeptide,
     title: "Peptide Wellness Support",
-    text: "Provider-directed peptide wellness support, backed by reliable sourcing, professional education, and structured clinical workflows.",
+    text: "Provider-directed peptide support, offered solely at a licensed clinician's discretion and subject to applicable regulatory status, with professional education and structured clinical workflows.",
   },
   {
     icon: IconSystems,
@@ -126,12 +126,12 @@ export default function Home() {
                 </Link>
                 <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
                   <Button size="lg" variant="light" className="w-full sm:w-auto">
-                    Shop Now <IconExternal />
+                    Provider Ordering <IconExternal />
                   </Button>
                 </a>
               </div>
               <p className="mt-5 text-sm text-white/45">
-                Ready to order? Shop the provider portal. Exploring a partnership?{" "}
+                Already a partner? Access the provider ordering portal. Exploring a partnership?{" "}
                 <Link href="/how-it-works" className="text-white/70 underline underline-offset-4 hover:text-white">
                   See how it works
                 </Link>

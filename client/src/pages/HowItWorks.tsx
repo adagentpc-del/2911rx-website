@@ -51,7 +51,7 @@ const STEPS = [
 const FAQS = [
   {
     q: "What therapies are available?",
-    a: "2911Rx supports provider-directed GLP-1 therapy programs, metabolic optimization programs, and peptide wellness support. Specific offerings, formulations, and availability are discussed directly with prospective partners during consultation. All therapies are available exclusively through licensed providers.",
+    a: "2911Rx supports provider-directed GLP-1 therapy programs, metabolic optimization programs, and peptide wellness support. Specific offerings, formulations, and availability are discussed directly with prospective partners during consultation. All therapies are available exclusively through licensed providers. Some products may be compounded or may not be approved by the FDA; availability depends on current regulatory status and a provider's independent clinical judgment, and nothing here is a claim of FDA approval, safety, or effectiveness.",
   },
   {
     q: "What is your pricing?",
