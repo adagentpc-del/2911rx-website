@@ -46,7 +46,7 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm">
-              Shop Now <IconExternal />
+              Provider Ordering <IconExternal />
             </Button>
           </a>
           <Link href="/contact">
@@ -81,7 +81,7 @@ export function Header() {
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 rounded-md px-2 py-2.5 text-sm font-medium hover:bg-muted"
             >
-              Shop Now <IconExternal />
+              Provider Ordering <IconExternal />
             </a>
             <Link href="/contact" onClick={() => setOpen(false)}>
               <Button className="mt-2 w-full">Become a Partner</Button>
@@ -131,9 +131,15 @@ export function Footer() {
           <p className="max-w-4xl text-xs leading-relaxed text-white/45">
             2911Rx partners exclusively with licensed healthcare providers and pharmacy
             partners. Therapies and wellness programs are available only through licensed
-            providers operating within their scope of practice. This website is intended for
-            licensed healthcare professionals and wellness organizations. It does not provide
-            medical advice and does not offer products for direct purchase by patients or consumers.
+            providers operating within their scope of practice, and are dispensed solely on
+            the basis of a provider's independent clinical judgment. Certain products may be
+            compounded or may contain substances that are not approved by the U.S. Food and
+            Drug Administration; no statement on this site should be read as a claim that any
+            product is FDA-approved or as a representation of safety or effectiveness. This
+            website is intended for licensed healthcare professionals and wellness
+            organizations. It does not provide medical advice, makes no claims to diagnose,
+            treat, cure, or prevent any disease, and does not offer products for direct
+            purchase by patients or consumers.
           </p>
           <p className="mt-4 text-xs text-white/35">
             © {new Date().getFullYear()} 2911Rx. All rights reserved.
