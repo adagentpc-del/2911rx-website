@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1626"/>
+      <stop offset="1" stop-color="#0d2030"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="78%" cy="12%" r="55%">
+      <stop offset="0" stop-color="#2fbfa6" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#2fbfa6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <text x="80" y="150" font-family="Georgia, serif" font-size="46" font-weight="700" fill="#ffffff">2911<tspan fill="#2fbfa6">Rx</tspan></text>
+  <text x="80" y="200" font-family="Inter, Arial, sans-serif" font-size="20" letter-spacing="3" fill="#7fd9c8">FOR LICENSED HEALTHCARE PROVIDERS</text>
+  <text x="80" y="320" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#ffffff">Build a wellness program your</text>
+  <text x="80" y="398" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#ffffff">patients <tspan fill="#2fbfa6">stay enrolled in.</tspan></text>
+  <text x="80" y="500" font-family="Inter, Arial, sans-serif" font-size="26" fill="#b7c4d0">GLP-1 therapies, metabolic optimization, and peptide wellness,</text>
+  <text x="80" y="538" font-family="Inter, Arial, sans-serif" font-size="26" fill="#b7c4d0">plus the pharmacy relationships and operational support to scale.</text>
+</svg>
