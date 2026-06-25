@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
+import { PORTAL_URL } from "@/lib/utils";
 import HeroArt from "@/components/HeroArt";
 const Hero3D = lazy(() => import("@/components/Hero3D"));
 import {
@@ -13,6 +14,7 @@ import {
   IconHandshake,
   IconRecurring,
   IconArrow,
+  IconExternal,
 } from "@/components/Icons";
 import { StatBand, GrowthChart, DonutChart, CheckList } from "@/components/DataViz";
 
@@ -118,17 +120,21 @@ export default function Home() {
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link href="/contact">
                   <Button size="lg" className="w-full sm:w-auto">
-                    Request Partnership Information <IconArrow />
+                    Become a Partner <IconArrow />
                   </Button>
                 </Link>
-                <Link href="/how-it-works">
+                <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
                   <Button size="lg" variant="light" className="w-full sm:w-auto">
-                    See How It Works
+                    Shop Now <IconExternal />
                   </Button>
-                </Link>
+                </a>
               </div>
               <p className="mt-5 text-sm text-white/45">
-                No cost to explore. For licensed providers and wellness organizations.
+                Ready to order? Shop the provider portal. Exploring a partnership?{" "}
+                <Link href="/how-it-works" className="text-white/70 underline underline-offset-4 hover:text-white">
+                  See how it works
+                </Link>
+                .
               </p>
             </motion.div>
 

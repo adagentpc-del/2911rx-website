@@ -179,7 +179,7 @@ export default function Partnership() {
             <motion.div
               {...fadeUp}
               transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm md:p-9"
+              className="rounded-3xl border border-white/10 bg-white/[0.05] p-7 md:p-9"
             >
               <DonutChart
                 segments={VALUE_MIX}
