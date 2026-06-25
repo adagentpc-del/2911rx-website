@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import { IconCheck } from "@/components/Icons";
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<InsertInquiry>({
     resolver: zodResolver(insertInquirySchema),
@@ -29,7 +30,10 @@ export default function Contact() {
   const onSubmit = async (data: InsertInquiry) => {
     setServerError("");
     try {
-      await apiRequest("POST", "/api/inquiries", data);
+      await apiRequest("POST", "/api/inquiries", {
+        ...data,
+        company_website: honeypotRef.current?.value || "",
+      });
       setSubmitted(true);
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -83,6 +87,16 @@ export default function Contact() {
         <div className="mx-auto max-w-2xl px-5 sm:px-6 lg:px-8">
           <Card className="p-7 shadow-[0_20px_60px_-30px_hsl(214_45%_11%/0.25)] sm:p-9">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
+              {/* Honeypot: hidden from humans; bots that fill it are silently dropped */}
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="company_website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute left-[-9999px] h-0 w-0 opacity-0"
+              />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="name">Full Name *</Label>

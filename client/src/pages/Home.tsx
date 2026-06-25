@@ -131,7 +131,8 @@ export default function Home() {
                 </a>
               </div>
               <p className="mt-5 text-sm text-white/45">
-                Already a partner? Access the provider ordering portal. Exploring a partnership?{" "}
+                No cost and no obligation to explore, built for licensed providers and wellness
+                organizations. New here?{" "}
                 <Link href="/how-it-works" className="text-white/70 underline underline-offset-4 hover:text-white">
                   See how it works
                 </Link>
@@ -356,6 +357,9 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Free consultation. No cost, no obligation.
+            </p>
           </motion.div>
         </div>
       </section>
