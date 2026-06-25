@@ -18,6 +18,7 @@ import {
 } from "@/components/Icons";
 import { StatBand, GrowthChart, DonutChart, CheckList } from "@/components/DataViz";
 import { LifestyleBand } from "@/components/Photo";
+import LeadMagnet from "@/components/LeadMagnet";
 
 const STATS = [
   { value: 5, suffix: " steps", label: "From first call to launched program" },
@@ -332,6 +333,9 @@ export default function Home() {
           />
         </div>
       </section>
+
+      {/* Lead magnet */}
+      <LeadMagnet />
 
       {/* Closing CTA */}
       <section className="py-20 md:py-28">
