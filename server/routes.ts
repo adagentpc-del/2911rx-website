@@ -20,6 +20,10 @@ function requireAdmin(req: Request, res: Response, next: NextFunction) {
 export function registerRoutes(app: Express) {
   // ---------- Public ----------
   app.post("/api/inquiries", async (req, res) => {
+    // Honeypot: real users never fill this hidden field. Pretend success for bots.
+    if (req.body?.company_website) {
+      return res.status(201).json({ ok: true });
+    }
     const parsed = insertInquirySchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({ error: fromZodError(parsed.error).message });
