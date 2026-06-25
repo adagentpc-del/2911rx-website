@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { cn, PORTAL_URL, CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/utils";
+import { useSettings } from "@/lib/useSettings";
 import { Button } from "@/components/ui";
 import { IconExternal } from "@/components/Icons";
+import ConsultPopup from "@/components/ConsultPopup";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -94,6 +96,9 @@ export function Header() {
 }
 
 export function Footer() {
+  const settings = useSettings();
+  const email = settings.contact_email || CONTACT_EMAIL;
+  const phone = settings.contact_phone || CONTACT_PHONE;
   return (
     <footer className="bg-navy text-white">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
@@ -105,19 +110,19 @@ export function Footer() {
               metabolic optimization, peptide wellness support, and operational partnership
               systems, built on licensed provider and pharmacy relationships.
             </p>
-            {(CONTACT_EMAIL || CONTACT_PHONE) && (
+            {(email || phone) && (
               <div className="mt-5 space-y-1.5 text-sm text-white/70">
-                {CONTACT_EMAIL && (
+                {email && (
                   <p>
-                    <a href={`mailto:${CONTACT_EMAIL}`} className="transition-colors hover:text-teal-light">
-                      {CONTACT_EMAIL}
+                    <a href={`mailto:${email}`} className="transition-colors hover:text-teal-light">
+                      {email}
                     </a>
                   </p>
                 )}
-                {CONTACT_PHONE && (
+                {phone && (
                   <p>
-                    <a href={`tel:${CONTACT_PHONE.replace(/[^0-9+]/g, "")}`} className="transition-colors hover:text-teal-light">
-                      {CONTACT_PHONE}
+                    <a href={`tel:${phone.replace(/[^0-9+]/g, "")}`} className="transition-colors hover:text-teal-light">
+                      {phone}
                     </a>
                   </p>
                 )}
@@ -180,6 +185,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <ConsultPopup />
     </div>
   );
 }
