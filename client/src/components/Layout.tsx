@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
-import { cn, PORTAL_URL } from "@/lib/utils";
+import { cn, PORTAL_URL, CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { IconExternal } from "@/components/Icons";
 
@@ -105,6 +105,24 @@ export function Footer() {
               metabolic optimization, peptide wellness support, and operational partnership
               systems, built on licensed provider and pharmacy relationships.
             </p>
+            {(CONTACT_EMAIL || CONTACT_PHONE) && (
+              <div className="mt-5 space-y-1.5 text-sm text-white/70">
+                {CONTACT_EMAIL && (
+                  <p>
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="transition-colors hover:text-teal-light">
+                      {CONTACT_EMAIL}
+                    </a>
+                  </p>
+                )}
+                {CONTACT_PHONE && (
+                  <p>
+                    <a href={`tel:${CONTACT_PHONE.replace(/[^0-9+]/g, "")}`} className="transition-colors hover:text-teal-light">
+                      {CONTACT_PHONE}
+                    </a>
+                  </p>
+                )}
+              </div>
+            )}
           </div>
           <div>
             <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Explore</h4>
@@ -141,9 +159,15 @@ export function Footer() {
             treat, cure, or prevent any disease, and does not offer products for direct
             purchase by patients or consumers.
           </p>
-          <p className="mt-4 text-xs text-white/35">
-            © {new Date().getFullYear()} 2911Rx. All rights reserved.
-          </p>
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-white/35">
+              © {new Date().getFullYear()} 2911Rx. All rights reserved.
+            </p>
+            <div className="flex items-center gap-5 text-xs text-white/55">
+              <Link href="/privacy" className="transition-colors hover:text-teal-light">Privacy Policy</Link>
+              <Link href="/terms" className="transition-colors hover:text-teal-light">Terms of Use</Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
