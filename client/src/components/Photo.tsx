@@ -37,7 +37,7 @@ export function Photo({
         alt={alt}
         loading="lazy"
         decoding="async"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover object-[50%_28%]"
       />
     </div>
   );
