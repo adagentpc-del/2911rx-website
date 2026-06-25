@@ -129,8 +129,8 @@ export default function Partnership() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <LifestyleBand
-            id="photo-1434682881908-b43d0467b798"
-            alt="A strong, fit woman training and looking her best"
+            id="photo-1656017054238-f08a0e1482fe"
+            alt="A joyful couple laughing together outdoors"
             eyebrow="Built around outcomes"
             title="Healthier patients, a stronger practice"
             body="Your patients want to look and feel their best. With dependable therapies and the operational support to deliver them consistently, you become the practice they stay with and refer."

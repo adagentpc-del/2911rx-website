@@ -60,8 +60,8 @@ export default function About() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <LifestyleBand
-            id="photo-1628531832865-989e137150ce"
-            alt="A fit couple hiking a scenic trail together"
+            id="photo-1571771826307-98d0d0999028"
+            alt="A happy couple laughing together outdoors"
             eyebrow="Built for the long game"
             title="A partner you can build on for years"
             body="The best wellness programs compound over time. We focus on reliability, consistency, and support so the partnership keeps paying off long after the first order, for your practice and your patients."

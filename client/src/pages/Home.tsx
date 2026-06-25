@@ -221,8 +221,8 @@ export default function Home() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <LifestyleBand
-            id="photo-1758520705254-1e9d913d78ea"
-            alt="A fit, athletic couple jogging together outdoors"
+            id="photo-1466979939565-131c4b39a51b"
+            alt="A happy couple laughing together outdoors"
             eyebrow="Why it matters"
             title="Programs your patients stay active for"
             body="Continuity-based wellness only works when patients stay engaged. 2911Rx helps you build programs people actually stick with, backed by reliable fulfillment and a partner that has your team's back."
@@ -323,8 +323,8 @@ export default function Home() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <LifestyleBand
-            id="photo-1499894245346-c90612441beb"
-            alt="A fit, confident man outdoors looking strong and healthy"
+            id="photo-1726766406089-0308c800b6b2"
+            alt="A happy couple embracing outdoors"
             eyebrow="The relationship"
             title="Partnerships your patients can feel"
             body="When providers have consistent therapies and dependable support behind them, patients notice. That trust is what turns a first visit into a lasting wellness relationship and recurring revenue for your practice."

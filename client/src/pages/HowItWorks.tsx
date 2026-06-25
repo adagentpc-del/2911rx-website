@@ -121,8 +121,8 @@ export default function HowItWorks() {
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <LifestyleBand
-            id="photo-1699959560616-aa17ace76879"
-            alt="An active group hiking a mountain trail together"
+            id="photo-1530700131180-d43d9b8cc41f"
+            alt="A person walking a happy golden retriever outdoors"
             eyebrow="The payoff"
             title="Less logistics, more time for patients"
             body="Once you are onboarded, ordering and fulfillment run quietly in the background. Your team spends its energy on patient care while we handle the operational details."
