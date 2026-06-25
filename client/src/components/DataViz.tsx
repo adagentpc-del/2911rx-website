@@ -68,7 +68,7 @@ function StatItem({ stat, active, tone }: { stat: Stat; active: boolean; tone: T
       className={cn(
         "rounded-2xl border p-6 text-center",
         tone === "light"
-          ? "border-white/10 bg-white/[0.04] backdrop-blur-sm"
+          ? "border-white/10 bg-white/[0.06]"
           : "border-border/80 bg-card shadow-[0_10px_30px_-18px_hsl(214_45%_11%/0.25)]",
       )}
     >
@@ -460,7 +460,10 @@ export function FlowDiagram({
             aria-hidden="true"
           >
             <line x1="0" y1="4" x2="1000" y2="4" stroke={gridStroke(tone)} strokeWidth="2" />
-            <motion.line
+            {/* One clean technique only: a dashed line whose offset flows.
+                (Mixing framer-motion pathLength with a SMIL dashoffset on the
+                same element fights over strokeDasharray and causes flicker.) */}
+            <line
               x1="0"
               y1="4"
               x2="1000"
@@ -468,11 +471,8 @@ export function FlowDiagram({
               stroke={tone === "light" ? C.tealLight : C.teal}
               strokeWidth="2.5"
               strokeDasharray="10 8"
-              initial={{ pathLength: 0 }}
-              animate={inView ? { pathLength: 1 } : {}}
-              transition={{ duration: reduce ? 0 : 1.4, ease: EASE }}
             >
-              {!reduce && (
+              {inView && !reduce && (
                 <animate
                   attributeName="stroke-dashoffset"
                   from="36"
@@ -481,7 +481,7 @@ export function FlowDiagram({
                   repeatCount="indefinite"
                 />
               )}
-            </motion.line>
+            </line>
           </svg>
         </div>
 

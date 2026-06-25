@@ -46,7 +46,7 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm">
-              Provider Portal <IconExternal />
+              Shop Now <IconExternal />
             </Button>
           </a>
           <Link href="/contact">
@@ -81,7 +81,7 @@ export function Header() {
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 rounded-md px-2 py-2.5 text-sm font-medium hover:bg-muted"
             >
-              Provider Portal <IconExternal />
+              Shop Now <IconExternal />
             </a>
             <Link href="/contact" onClick={() => setOpen(false)}>
               <Button className="mt-2 w-full">Become a Partner</Button>
