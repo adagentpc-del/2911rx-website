@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   Inbox, LogOut, Trash2, Loader2, BarChart3, Settings as SettingsIcon,
-  Users as UsersIcon, Eye, Mail, CalendarClock, Download, KeyRound, ShieldCheck,
+  Users as UsersIcon, Eye, Mail, CalendarClock, Download, KeyRound, ShieldCheck, CreditCard,
 } from "lucide-react";
 import type { Inquiry } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -11,7 +11,7 @@ import { Button, Card, Select, Input, Label } from "@/components/ui";
 import { Logo } from "@/components/Layout";
 import { cn } from "@/lib/utils";
 
-type Tab = "leads" | "analytics" | "settings" | "team";
+type Tab = "leads" | "analytics" | "billing" | "settings" | "team";
 type Me = { isAdmin: boolean; email: string | null; role: string | null; id: number | null };
 const SUPER = "superadmin";
 
@@ -188,6 +188,8 @@ const SETTING_FIELDS: { key: string; label: string; hint: string; type?: string;
   { key: "calendar_url", label: "Consult booking link", hint: "Calendly/Google link the consult 'Book' button opens." },
   { key: "resend_from", label: "Alert 'from' address", hint: "Optional. Defaults to onboarding@resend.dev until you verify a domain." },
   { key: "resend_api_key", label: "Resend API key", hint: "Super admin only. Required to send email alerts. Get a free key at resend.com.", type: "password", superOnly: true },
+  { key: "pay_url_monthly", label: "Monthly pay link ($99/mo)", hint: "Paste your PayPal or Stripe payment link for the monthly plan. It powers the Pay button on the Billing tab." },
+  { key: "pay_url_annual", label: "Annual pay link ($990/yr)", hint: "Paste your PayPal or Stripe payment link for the annual plan ($990, 2 months free)." },
 ];
 function SettingsView({ me }: { me: Me }) {
   const iAmSuper = me.role === SUPER;
@@ -237,6 +239,53 @@ function SettingsView({ me }: { me: Me }) {
         </div>
       </form>
     </Card>
+  );
+}
+
+/* ------------------------------ Billing ------------------------------ */
+function BillingView() {
+  const { data, isLoading } = useQuery<Record<string, string>>({ queryKey: ["/api/admin/settings"] });
+  if (isLoading) return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>;
+  const monthly = data?.pay_url_monthly?.trim();
+  const annual = data?.pay_url_annual?.trim();
+  const configured = monthly || annual;
+  return (
+    <div className="max-w-xl space-y-6">
+      <Card className="overflow-hidden p-0">
+        <div className="hero-surface px-7 py-6 text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">Managed Hosting &amp; Maintenance</p>
+          <p className="mt-2 font-display text-3xl font-semibold">
+            $99 <span className="text-lg font-normal text-white/70">/ month</span>
+          </p>
+          <p className="mt-1 text-sm text-white/70">or $990 / year paid upfront — 2 months free</p>
+        </div>
+        <div className="space-y-4 p-7">
+          <p className="text-sm text-muted-foreground">
+            Secure hosting, uptime monitoring, security updates, backups, and ongoing support for the 2911Rx website.
+          </p>
+          {configured ? (
+            <div className="flex flex-col gap-3 sm:flex-row">
+              {monthly && (
+                <a href={monthly} target="_blank" rel="noopener noreferrer" className="flex-1">
+                  <Button size="lg" className="w-full"><CreditCard className="h-4 w-4" /> Pay $99 / month</Button>
+                </a>
+              )}
+              {annual && (
+                <a href={annual} target="_blank" rel="noopener noreferrer" className="flex-1">
+                  <Button variant="outline" size="lg" className="w-full"><CreditCard className="h-4 w-4" /> Pay $990 / year</Button>
+                </a>
+              )}
+            </div>
+          ) : (
+            <p className="rounded-lg border border-dashed border-border bg-muted/50 p-4 text-sm text-muted-foreground">
+              No payment link is set yet. Add your monthly and/or annual pay link in the{" "}
+              <span className="font-medium text-foreground">Settings</span> tab to turn on the buttons here.
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">Payments are processed securely on the provider's site. You'll get a receipt by email.</p>
+        </div>
+      </Card>
+    </div>
   );
 }
 
@@ -372,6 +421,7 @@ function TeamView({ me }: { me: Me }) {
 const TABS: { id: Tab; label: string; icon: any }[] = [
   { id: "leads", label: "Leads", icon: Inbox },
   { id: "analytics", label: "Analytics", icon: BarChart3 },
+  { id: "billing", label: "Billing", icon: CreditCard },
   { id: "settings", label: "Settings", icon: SettingsIcon },
   { id: "team", label: "Team", icon: UsersIcon },
 ];
@@ -427,6 +477,7 @@ export default function AdminDashboard() {
       <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6">
         {tab === "leads" && <LeadsView />}
         {tab === "analytics" && <AnalyticsView />}
+        {tab === "billing" && <BillingView />}
         {tab === "settings" && <SettingsView me={me} />}
         {tab === "team" && <TeamView me={me} />}
       </main>
