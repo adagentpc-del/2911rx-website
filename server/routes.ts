@@ -6,8 +6,11 @@ import {
   insertLeadSchema,
   PUBLIC_SETTING_KEYS,
   ALL_SETTING_KEYS,
+  SUPERADMIN_SETTING_KEYS,
   type Inquiry,
 } from "@shared/schema";
+
+const SUPER_ONLY_SETTINGS = SUPERADMIN_SETTING_KEYS as readonly string[];
 import { fromZodError } from "zod-validation-error";
 
 declare module "express-session" {
@@ -206,16 +209,22 @@ export function registerRoutes(app: Express) {
   });
 
   /* ---------------- Admin: settings ---------------- */
-  app.get("/api/admin/settings", requireAdmin, async (_req, res) => {
+  app.get("/api/admin/settings", requireAdmin, async (req, res) => {
     const all = await storage.getSettings();
     const out: Record<string, string> = {};
-    for (const k of ALL_SETTING_KEYS) out[k] = all[k] ?? "";
+    for (const k of ALL_SETTING_KEYS) {
+      // Secrets (Resend API key) are visible to super admins only.
+      if (!isSuper(req) && SUPER_ONLY_SETTINGS.includes(k)) continue;
+      out[k] = all[k] ?? "";
+    }
     res.json(out);
   });
 
   app.put("/api/admin/settings", requireAdmin, async (req, res) => {
     const body = req.body ?? {};
     for (const k of ALL_SETTING_KEYS) {
+      // Silently ignore writes to super-admin-only keys from regular admins.
+      if (!isSuper(req) && SUPER_ONLY_SETTINGS.includes(k)) continue;
       if (typeof body[k] === "string") await storage.setSetting(k, body[k].trim());
     }
     res.json({ ok: true });
