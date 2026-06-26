@@ -158,6 +158,7 @@ export function registerRoutes(app: Express) {
 
   /* ---------------- Admin: auth & first-run setup ---------------- */
   app.get("/api/admin/setup-status", async (_req, res) => {
+    res.set("Cache-Control", "no-store");
     res.json({ needsSetup: (await storage.countAdmins()) === 0 });
   });
 
@@ -202,6 +203,7 @@ export function registerRoutes(app: Express) {
   });
 
   app.get("/api/admin/me", (req, res) => {
+    res.set("Cache-Control", "no-store");
     res.json({
       isAdmin: !!req.session?.isAdmin,
       email: req.session?.adminEmail ?? null,
