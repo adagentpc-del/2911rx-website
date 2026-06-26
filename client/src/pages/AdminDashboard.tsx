@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   Inbox, LogOut, Trash2, Loader2, BarChart3, Settings as SettingsIcon,
-  Users as UsersIcon, Eye, Mail, CalendarClock, Download, KeyRound,
+  Users as UsersIcon, Eye, Mail, CalendarClock, Download, KeyRound, ShieldCheck,
 } from "lucide-react";
 import type { Inquiry } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -12,6 +12,8 @@ import { Logo } from "@/components/Layout";
 import { cn } from "@/lib/utils";
 
 type Tab = "leads" | "analytics" | "settings" | "team";
+type Me = { isAdmin: boolean; email: string | null; role: string | null; id: number | null };
+const SUPER = "superadmin";
 
 const STATUS_STYLES: Record<string, string> = {
   new: "bg-teal/10 text-teal-dark border-teal/30",
@@ -238,16 +240,31 @@ function SettingsView() {
 
 /* ------------------------------- Team -------------------------------- */
 type AdminRow = { id: number; email: string; role: string; createdAt: string };
-function TeamView() {
+
+function RoleBadge({ role }: { role: string }) {
+  const sup = role === SUPER;
+  return (
+    <span className={cn(
+      "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium",
+      sup ? "border-teal/30 bg-teal/10 text-teal-dark" : "border-border bg-muted text-muted-foreground",
+    )}>
+      {sup && <ShieldCheck className="h-3 w-3" />}{sup ? "Super Admin" : "Admin"}
+    </span>
+  );
+}
+
+function TeamView({ me }: { me: Me }) {
+  const iAmSuper = me.role === SUPER;
   const { data: users, isLoading } = useQuery<AdminRow[]>({ queryKey: ["/api/admin/users"] });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newRole, setNewRole] = useState("admin");
   const [error, setError] = useState("");
 
   const addUser = useMutation({
-    mutationFn: () => apiRequest("POST", "/api/admin/users", { email, password }),
+    mutationFn: () => apiRequest("POST", "/api/admin/users", { email, password, role: newRole }),
     onSuccess: () => {
-      setEmail(""); setPassword(""); setError("");
+      setEmail(""); setPassword(""); setNewRole("admin"); setError("");
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
     },
     onError: (e: any) => setError(e?.message || "Could not add user"),
@@ -256,6 +273,11 @@ function TeamView() {
     mutationFn: (id: number) => apiRequest("DELETE", `/api/admin/users/${id}`),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] }),
     onError: (e: any) => alert(e?.message || "Could not delete user"),
+  });
+  const setRole = useMutation({
+    mutationFn: ({ id, role }: { id: number; role: string }) => apiRequest("PATCH", `/api/admin/users/${id}/role`, { role }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] }),
+    onError: (e: any) => alert(e?.message || "Could not change role"),
   });
   const changePw = async (id: number, label: string) => {
     const pw = prompt(`New password for ${label} (min 8 chars):`);
@@ -268,27 +290,54 @@ function TeamView() {
     <div className="max-w-2xl space-y-8">
       <Card className="p-7">
         <h2 className="font-display text-xl font-semibold">Admin users</h2>
-        <p className="mt-1 text-sm text-muted-foreground">People who can log in to this dashboard.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          People who can log in to this dashboard. Super admins have full control and cannot be removed by regular admins.
+        </p>
         {isLoading ? (
           <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
         ) : (
           <div className="mt-5 space-y-2">
-            {(users ?? []).map((u) => (
-              <div key={u.id} className="flex items-center justify-between gap-3 rounded-lg border border-border/70 px-4 py-3">
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium">{u.email}</p>
-                  <p className="text-xs capitalize text-muted-foreground">{u.role}</p>
+            {(users ?? []).map((u) => {
+              const isSelf = u.id === me.id;
+              const targetSuper = u.role === SUPER;
+              // A regular admin can't reset/remove a super admin (but anyone can manage their own password).
+              const canManage = iAmSuper || !targetSuper || isSelf;
+              const canRemove = !isSelf && (iAmSuper || !targetSuper);
+              return (
+                <div key={u.id} className="flex items-center justify-between gap-3 rounded-lg border border-border/70 px-4 py-3">
+                  <div className="min-w-0">
+                    <p className="flex items-center gap-2 truncate text-sm font-medium">
+                      {u.email}
+                      {isSelf && <span className="text-xs font-normal text-muted-foreground">(you)</span>}
+                    </p>
+                    <div className="mt-1"><RoleBadge role={u.role} /></div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    {iAmSuper && !isSelf && (
+                      <Select
+                        className="h-9 w-32 text-xs"
+                        value={targetSuper ? SUPER : "admin"}
+                        onChange={(e) => setRole.mutate({ id: u.id, role: e.target.value })}
+                        aria-label={`Role for ${u.email}`}
+                      >
+                        <option value="admin">Admin</option>
+                        <option value={SUPER}>Super Admin</option>
+                      </Select>
+                    )}
+                    {canManage && (
+                      <Button variant="outline" size="sm" onClick={() => changePw(u.id, u.email)}>
+                        <KeyRound className="h-3.5 w-3.5" /> Password
+                      </Button>
+                    )}
+                    {canRemove && (
+                      <Button variant="ghost" size="sm" aria-label={`Remove ${u.email}`} onClick={() => { if (confirm(`Remove ${u.email}?`)) delUser.mutate(u.id); }}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
-                <div className="flex shrink-0 items-center gap-1.5">
-                  <Button variant="outline" size="sm" onClick={() => changePw(u.id, u.email)}>
-                    <KeyRound className="h-3.5 w-3.5" /> Password
-                  </Button>
-                  <Button variant="ghost" size="sm" aria-label={`Remove ${u.email}`} onClick={() => { if (confirm(`Remove ${u.email}?`)) delUser.mutate(u.id); }}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </Card>
@@ -298,9 +347,18 @@ function TeamView() {
         <form className="mt-4 space-y-3" onSubmit={(e) => { e.preventDefault(); addUser.mutate(); }}>
           <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <Input type="password" placeholder="Password (min 8 characters)" value={password} onChange={(e) => setPassword(e.target.value)} />
+          {iAmSuper && (
+            <div>
+              <Label htmlFor="new-role">Role</Label>
+              <Select id="new-role" value={newRole} onChange={(e) => setNewRole(e.target.value)}>
+                <option value="admin">Admin — company owner access</option>
+                <option value={SUPER}>Super Admin — full control</option>
+              </Select>
+            </div>
+          )}
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" disabled={addUser.isPending}>
-            {addUser.isPending && <Loader2 className="h-4 w-4 animate-spin" />} Add admin
+            {addUser.isPending && <Loader2 className="h-4 w-4 animate-spin" />} Add {newRole === SUPER ? "super admin" : "admin"}
           </Button>
         </form>
       </Card>
@@ -319,7 +377,7 @@ const TABS: { id: Tab; label: string; icon: any }[] = [
 export default function AdminDashboard() {
   const [, navigate] = useLocation();
   const [tab, setTab] = useState<Tab>("leads");
-  const { data: me, isLoading: meLoading } = useQuery<{ isAdmin: boolean; email: string | null }>({ queryKey: ["/api/admin/me"] });
+  const { data: me, isLoading: meLoading } = useQuery<Me>({ queryKey: ["/api/admin/me"] });
 
   useEffect(() => {
     if (!meLoading && me && !me.isAdmin) navigate("/admin");
@@ -337,7 +395,9 @@ export default function AdminDashboard() {
         <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between px-5 sm:px-6">
           <div className="flex items-center gap-3">
             <Logo dark />
-            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Admin</span>
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+              {me.role === SUPER ? "Super Admin" : "Admin"}
+            </span>
           </div>
           <div className="flex items-center gap-3">
             {me.email && <span className="hidden text-sm text-white/60 sm:inline">{me.email}</span>}
@@ -366,7 +426,7 @@ export default function AdminDashboard() {
         {tab === "leads" && <LeadsView />}
         {tab === "analytics" && <AnalyticsView />}
         {tab === "settings" && <SettingsView />}
-        {tab === "team" && <TeamView />}
+        {tab === "team" && <TeamView me={me} />}
       </main>
     </div>
   );

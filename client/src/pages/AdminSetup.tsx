@@ -31,7 +31,7 @@ export default function AdminSetup() {
     setLoading(true);
     try {
       await apiRequest("POST", "/api/admin/setup", { email, password });
-      navigate("/admin/inquiries");
+      navigate("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Setup failed. Please try again.");
     } finally {
@@ -46,10 +46,11 @@ export default function AdminSetup() {
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
           <Logo />
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <ShieldCheck className="h-4 w-4 text-teal-dark" /> Create owner account
+            <ShieldCheck className="h-4 w-4 text-teal-dark" /> Create super admin account
           </div>
           <p className="text-xs text-muted-foreground">
-            This one-time setup creates the first admin login. It locks automatically afterward.
+            This one-time setup creates the super admin — the top-level login with full control.
+            You can add the company owners as admins afterward. It locks automatically once created.
           </p>
         </div>
         <form onSubmit={submit} className="space-y-4">
