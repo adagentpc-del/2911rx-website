@@ -29,7 +29,9 @@ export interface IStorage {
   getAdminByEmail(email: string): Promise<AdminUser | undefined>;
   createAdmin(email: string, passwordHash: string, role: string): Promise<AdminSummary>;
   listAdmins(): Promise<AdminSummary[]>;
+  getAdminById(id: number): Promise<AdminSummary | undefined>;
   updateAdminPassword(id: number, passwordHash: string): Promise<boolean>;
+  updateAdminRole(id: number, role: string): Promise<boolean>;
   deleteAdmin(id: number): Promise<boolean>;
   // settings
   getSettings(): Promise<Record<string, string>>;
@@ -129,9 +131,18 @@ class MemStorage implements IStorage {
   async listAdmins(): Promise<AdminSummary[]> {
     return this.admins.map((a) => ({ id: a.id, email: a.email, role: a.role, createdAt: a.createdAt }));
   }
+  async getAdminById(id: number): Promise<AdminSummary | undefined> {
+    const a = this.admins.find((x) => x.id === id);
+    return a ? { id: a.id, email: a.email, role: a.role, createdAt: a.createdAt } : undefined;
+  }
   async updateAdminPassword(id: number, passwordHash: string): Promise<boolean> {
     const a = this.admins.find((x) => x.id === id);
     if (a) a.passwordHash = passwordHash;
+    return !!a;
+  }
+  async updateAdminRole(id: number, role: string): Promise<boolean> {
+    const a = this.admins.find((x) => x.id === id);
+    if (a) a.role = role;
     return !!a;
   }
   async deleteAdmin(id: number): Promise<boolean> {
@@ -227,10 +238,25 @@ class DatabaseStorage implements IStorage {
       .from(adminUsers)
       .orderBy(desc(adminUsers.createdAt));
   }
+  async getAdminById(id: number): Promise<AdminSummary | undefined> {
+    const db = await this.dbPromise;
+    const { eq } = await import("drizzle-orm");
+    const [row] = await db
+      .select({ id: adminUsers.id, email: adminUsers.email, role: adminUsers.role, createdAt: adminUsers.createdAt })
+      .from(adminUsers)
+      .where(eq(adminUsers.id, id));
+    return row;
+  }
   async updateAdminPassword(id: number, passwordHash: string): Promise<boolean> {
     const db = await this.dbPromise;
     const { eq } = await import("drizzle-orm");
     const rows = await db.update(adminUsers).set({ passwordHash }).where(eq(adminUsers.id, id)).returning();
+    return rows.length > 0;
+  }
+  async updateAdminRole(id: number, role: string): Promise<boolean> {
+    const db = await this.dbPromise;
+    const { eq } = await import("drizzle-orm");
+    const rows = await db.update(adminUsers).set({ role }).where(eq(adminUsers.id, id)).returning();
     return rows.length > 0;
   }
   async deleteAdmin(id: number): Promise<boolean> {

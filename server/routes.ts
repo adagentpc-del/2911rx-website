@@ -14,12 +14,20 @@ declare module "express-session" {
   interface SessionData {
     isAdmin?: boolean;
     adminEmail?: string;
+    adminId?: number;
+    role?: string;
   }
 }
+
+const SUPER = "superadmin";
 
 function requireAdmin(req: Request, res: Response, next: NextFunction) {
   if (req.session?.isAdmin) return next();
   return res.status(401).json({ error: "Unauthorized" });
+}
+
+function isSuper(req: Request) {
+  return req.session?.role === SUPER;
 }
 
 /** Best-effort email alert via Resend. Never blocks or throws into the request. */
@@ -131,9 +139,12 @@ export function registerRoutes(app: Express) {
       return res.status(400).json({ error: "Enter a valid email and a password of at least 8 characters." });
     }
     const hash = await bcrypt.hash(password, 10);
-    await storage.createAdmin(email, hash, "owner");
+    // The very first account is the super admin (full control, cannot be removed by others).
+    const created = await storage.createAdmin(email, hash, SUPER);
     req.session.isAdmin = true;
     req.session.adminEmail = email;
+    req.session.adminId = created.id;
+    req.session.role = SUPER;
     res.status(201).json({ ok: true });
   });
 
@@ -149,6 +160,8 @@ export function registerRoutes(app: Express) {
     }
     req.session.isAdmin = true;
     req.session.adminEmail = user.email;
+    req.session.adminId = user.id;
+    req.session.role = user.role;
     res.json({ ok: true });
   });
 
@@ -157,7 +170,12 @@ export function registerRoutes(app: Express) {
   });
 
   app.get("/api/admin/me", (req, res) => {
-    res.json({ isAdmin: !!req.session?.isAdmin, email: req.session?.adminEmail ?? null });
+    res.json({
+      isAdmin: !!req.session?.isAdmin,
+      email: req.session?.adminEmail ?? null,
+      role: req.session?.role ?? null,
+      id: req.session?.adminId ?? null,
+    });
   });
 
   /* ---------------- Admin: inquiries / CRM ---------------- */
@@ -211,33 +229,75 @@ export function registerRoutes(app: Express) {
   app.post("/api/admin/users", requireAdmin, async (req, res) => {
     const email = String(req.body?.email ?? "").trim();
     const password = String(req.body?.password ?? "");
+    const role = String(req.body?.role ?? "admin") === SUPER ? SUPER : "admin";
     if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 8) {
       return res.status(400).json({ error: "Enter a valid email and a password of at least 8 characters." });
+    }
+    if (role === SUPER && !isSuper(req)) {
+      return res.status(403).json({ error: "Only a super admin can create another super admin." });
     }
     if (await storage.getAdminByEmail(email)) {
       return res.status(409).json({ error: "An admin with that email already exists." });
     }
     const hash = await bcrypt.hash(password, 10);
-    const created = await storage.createAdmin(email, hash, "admin");
+    const created = await storage.createAdmin(email, hash, role);
     res.status(201).json(created);
   });
 
   app.patch("/api/admin/users/:id/password", requireAdmin, async (req, res) => {
+    const id = Number(req.params.id);
     const password = String(req.body?.password ?? "");
     if (password.length < 8) {
       return res.status(400).json({ error: "Password must be at least 8 characters." });
     }
+    const target = await storage.getAdminById(id);
+    if (!target) return res.status(404).json({ error: "Not found" });
+    // Only a super admin (or the person themselves) may reset a super admin's password.
+    if (target.role === SUPER && !isSuper(req) && req.session?.adminId !== id) {
+      return res.status(403).json({ error: "Only a super admin can reset a super admin's password." });
+    }
     const hash = await bcrypt.hash(password, 10);
-    const ok = await storage.updateAdminPassword(Number(req.params.id), hash);
+    const ok = await storage.updateAdminPassword(id, hash);
     if (!ok) return res.status(404).json({ error: "Not found" });
     res.json({ ok: true });
   });
 
+  // Promote / demote (super admin only).
+  app.patch("/api/admin/users/:id/role", requireAdmin, async (req, res) => {
+    if (!isSuper(req)) {
+      return res.status(403).json({ error: "Only a super admin can change roles." });
+    }
+    const id = Number(req.params.id);
+    const role = String(req.body?.role ?? "") === SUPER ? SUPER : "admin";
+    const target = await storage.getAdminById(id);
+    if (!target) return res.status(404).json({ error: "Not found" });
+    // Never leave the panel without a super admin.
+    if (target.role === SUPER && role !== SUPER) {
+      const supers = (await storage.listAdmins()).filter((a) => a.role === SUPER).length;
+      if (supers <= 1) return res.status(400).json({ error: "You can't demote the only super admin." });
+    }
+    const ok = await storage.updateAdminRole(id, role);
+    if (!ok) return res.status(404).json({ error: "Not found" });
+    if (req.session?.adminId === id) req.session.role = role; // keep own session in sync
+    res.json({ ok: true });
+  });
+
   app.delete("/api/admin/users/:id", requireAdmin, async (req, res) => {
+    const id = Number(req.params.id);
     if ((await storage.countAdmins()) <= 1) {
       return res.status(400).json({ error: "You cannot delete the only remaining admin." });
     }
-    const ok = await storage.deleteAdmin(Number(req.params.id));
+    const target = await storage.getAdminById(id);
+    if (!target) return res.status(404).json({ error: "Not found" });
+    // A super admin can only be removed by a super admin, and never the last one.
+    if (target.role === SUPER) {
+      if (!isSuper(req)) {
+        return res.status(403).json({ error: "Only a super admin can remove a super admin." });
+      }
+      const supers = (await storage.listAdmins()).filter((a) => a.role === SUPER).length;
+      if (supers <= 1) return res.status(400).json({ error: "You can't remove the only super admin." });
+    }
+    const ok = await storage.deleteAdmin(id);
     if (!ok) return res.status(404).json({ error: "Not found" });
     res.json({ ok: true });
   });
