@@ -14,7 +14,7 @@ export default function AdminLogin() {
 
   // If no admin exists yet, send them to first-run setup.
   useEffect(() => {
-    fetch("/api/admin/setup-status", { credentials: "include" })
+    fetch("/api/admin/setup-status", { credentials: "include", cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         if (d.needsSetup) navigate("/admin/setup");

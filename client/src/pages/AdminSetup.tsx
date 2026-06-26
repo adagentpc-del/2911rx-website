@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -13,15 +13,9 @@ export default function AdminSetup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // If an owner already exists, this page is disabled.
-  useEffect(() => {
-    fetch("/api/admin/setup-status", { credentials: "include" })
-      .then((r) => r.json())
-      .then((d) => {
-        if (!d.needsSetup) navigate("/admin");
-      })
-      .catch(() => {});
-  }, [navigate]);
+  // Note: this page always renders the form. If an account already exists, the
+  // server safely rejects the request (403), so there's no need to redirect
+  // away — that redirect could strand the user if a stale status was cached.
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +25,7 @@ export default function AdminSetup() {
     setLoading(true);
     try {
       await apiRequest("POST", "/api/admin/setup", { email, password });
-      navigate("/admin");
+      navigate("/admin/inquiries");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Setup failed. Please try again.");
     } finally {
