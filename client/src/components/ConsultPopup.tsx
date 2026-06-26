@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -10,6 +11,7 @@ const SEEN_KEY = "rx_consult_seen";
 
 export default function ConsultPopup() {
   const settings = useSettings();
+  const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +22,8 @@ export default function ConsultPopup() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Don't interrupt people already on the contact form.
+    if (location.startsWith("/contact")) return;
     try {
       if (localStorage.getItem(SEEN_KEY)) return;
     } catch {
@@ -27,7 +31,7 @@ export default function ConsultPopup() {
     }
     const t = setTimeout(() => setOpen(true), 22000);
     return () => clearTimeout(t);
-  }, []);
+  }, [location]);
 
   const close = () => {
     setOpen(false);
