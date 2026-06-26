@@ -181,15 +181,17 @@ function AnalyticsView() {
 }
 
 /* ----------------------------- Settings ------------------------------ */
-const SETTING_FIELDS: { key: string; label: string; hint: string; type?: string }[] = [
+const SETTING_FIELDS: { key: string; label: string; hint: string; type?: string; superOnly?: boolean }[] = [
   { key: "notify_email", label: "Inquiry alert email", hint: "Where new-lead email alerts are sent." },
   { key: "contact_email", label: "Public contact email", hint: "Shown in the website footer (leave blank to hide)." },
   { key: "contact_phone", label: "Public contact phone", hint: "Shown in the footer (leave blank to hide)." },
   { key: "calendar_url", label: "Consult booking link", hint: "Calendly/Google link the consult 'Book' button opens." },
   { key: "resend_from", label: "Alert 'from' address", hint: "Optional. Defaults to onboarding@resend.dev until you verify a domain." },
-  { key: "resend_api_key", label: "Resend API key", hint: "Required to send email alerts. Get a free key at resend.com.", type: "password" },
+  { key: "resend_api_key", label: "Resend API key", hint: "Super admin only. Required to send email alerts. Get a free key at resend.com.", type: "password", superOnly: true },
 ];
-function SettingsView() {
+function SettingsView({ me }: { me: Me }) {
+  const iAmSuper = me.role === SUPER;
+  const fields = SETTING_FIELDS.filter((f) => !f.superOnly || iAmSuper);
   const { data, isLoading } = useQuery<Record<string, string>>({ queryKey: ["/api/admin/settings"] });
   const [form, setForm] = useState<Record<string, string>>({});
   const [saved, setSaved] = useState(false);
@@ -214,7 +216,7 @@ function SettingsView() {
         className="mt-6 space-y-5"
         onSubmit={(e) => { e.preventDefault(); save.mutate(); }}
       >
-        {SETTING_FIELDS.map((f) => (
+        {fields.map((f) => (
           <div key={f.key}>
             <Label htmlFor={f.key}>{f.label}</Label>
             <Input
@@ -425,7 +427,7 @@ export default function AdminDashboard() {
       <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6">
         {tab === "leads" && <LeadsView />}
         {tab === "analytics" && <AnalyticsView />}
-        {tab === "settings" && <SettingsView />}
+        {tab === "settings" && <SettingsView me={me} />}
         {tab === "team" && <TeamView me={me} />}
       </main>
     </div>
