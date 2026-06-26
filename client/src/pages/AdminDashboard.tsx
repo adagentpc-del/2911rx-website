@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import type { Inquiry } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Button, Card, Select, Input, Label } from "@/components/ui";
+import { Button, Card, Select, Input, Label, Textarea } from "@/components/ui";
 import { Logo } from "@/components/Layout";
 import { cn } from "@/lib/utils";
 
@@ -181,15 +181,17 @@ function AnalyticsView() {
 }
 
 /* ----------------------------- Settings ------------------------------ */
-const SETTING_FIELDS: { key: string; label: string; hint: string; type?: string; superOnly?: boolean }[] = [
+const SETTING_FIELDS: { key: string; label: string; hint: string; type?: string; superOnly?: boolean; multiline?: boolean }[] = [
   { key: "notify_email", label: "Inquiry alert email", hint: "Where new-lead email alerts are sent." },
   { key: "contact_email", label: "Public contact email", hint: "Shown in the website footer (leave blank to hide)." },
   { key: "contact_phone", label: "Public contact phone", hint: "Shown in the footer (leave blank to hide)." },
   { key: "calendar_url", label: "Consult booking link", hint: "Calendly/Google link the consult 'Book' button opens." },
   { key: "resend_from", label: "Alert 'from' address", hint: "Optional. Defaults to onboarding@resend.dev until you verify a domain." },
   { key: "resend_api_key", label: "Resend API key", hint: "Super admin only. Required to send email alerts. Get a free key at resend.com.", type: "password", superOnly: true },
-  { key: "pay_url_monthly", label: "Monthly pay link ($99/mo)", hint: "Paste your PayPal or Stripe payment link for the monthly plan. It powers the Pay button on the Billing tab." },
-  { key: "pay_url_annual", label: "Annual pay link ($990/yr)", hint: "Paste your PayPal or Stripe payment link for the annual plan ($990, 2 months free)." },
+  { key: "pay_embed_monthly", label: "Monthly button — PayPal embed code", hint: "Paste the full PayPal subscription button code ($99/mo). Renders the live button on the Billing tab.", multiline: true },
+  { key: "pay_url_monthly", label: "Monthly pay link (alternative to embed)", hint: "Optional. A simple monthly payment URL — used only if no embed code is set above." },
+  { key: "pay_embed_annual", label: "Annual button — PayPal embed code", hint: "Optional. Full PayPal button code for the $990/yr payment, or just use the link below.", multiline: true },
+  { key: "pay_url_annual", label: "Annual pay link ($990/yr)", hint: "e.g. https://www.paypal.com/ncp/payment/XXXX — used if no embed code is set above." },
 ];
 function SettingsView({ me }: { me: Me }) {
   const iAmSuper = me.role === SUPER;
@@ -221,12 +223,21 @@ function SettingsView({ me }: { me: Me }) {
         {fields.map((f) => (
           <div key={f.key}>
             <Label htmlFor={f.key}>{f.label}</Label>
-            <Input
-              id={f.key}
-              type={f.type ?? "text"}
-              value={form[f.key] ?? ""}
-              onChange={(e) => setForm((s) => ({ ...s, [f.key]: e.target.value }))}
-            />
+            {f.multiline ? (
+              <Textarea
+                id={f.key}
+                className="min-h-[120px] font-mono text-xs"
+                value={form[f.key] ?? ""}
+                onChange={(e) => setForm((s) => ({ ...s, [f.key]: e.target.value }))}
+              />
+            ) : (
+              <Input
+                id={f.key}
+                type={f.type ?? "text"}
+                value={form[f.key] ?? ""}
+                onChange={(e) => setForm((s) => ({ ...s, [f.key]: e.target.value }))}
+              />
+            )}
             <p className="mt-1 text-xs text-muted-foreground">{f.hint}</p>
           </div>
         ))}
@@ -243,14 +254,43 @@ function SettingsView({ me }: { me: Me }) {
 }
 
 /* ------------------------------ Billing ------------------------------ */
+// Renders one payment option: a live embedded PayPal button (in an isolated
+// iframe so each button loads its own PayPal SDK without conflicts), or a
+// simple link button, or nothing.
+function PayOption({ embed, url, label, outline }: { embed?: string; url?: string; label: string; outline?: boolean }) {
+  const e = embed?.trim();
+  const u = url?.trim();
+  if (e) {
+    const srcDoc = `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;font-family:system-ui,Arial,sans-serif}</style></head><body>${e}</body></html>`;
+    return (
+      <div className="rounded-xl border border-border bg-white p-4">
+        <p className="mb-3 text-sm font-semibold text-navy">{label}</p>
+        <iframe title={label} srcDoc={srcDoc} className="w-full" style={{ height: 220, border: "0" }} />
+      </div>
+    );
+  }
+  if (u) {
+    return (
+      <a href={u} target="_blank" rel="noopener noreferrer" className="block">
+        <Button variant={outline ? "outline" : undefined} size="lg" className="w-full">
+          <CreditCard className="h-4 w-4" /> {label}
+        </Button>
+      </a>
+    );
+  }
+  return null;
+}
+
 function BillingView() {
   const { data, isLoading } = useQuery<Record<string, string>>({ queryKey: ["/api/admin/settings"] });
   if (isLoading) return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>;
-  const monthly = data?.pay_url_monthly?.trim();
-  const annual = data?.pay_url_annual?.trim();
-  const configured = monthly || annual;
+  const opts = [
+    { embed: data?.pay_embed_monthly, url: data?.pay_url_monthly, label: "Pay $99 / month", outline: false },
+    { embed: data?.pay_embed_annual, url: data?.pay_url_annual, label: "Pay $990 / year", outline: true },
+  ].filter((o) => (o.embed && o.embed.trim()) || (o.url && o.url.trim()));
+
   return (
-    <div className="max-w-xl space-y-6">
+    <div className="max-w-2xl space-y-6">
       <Card className="overflow-hidden p-0">
         <div className="hero-surface px-7 py-6 text-white">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-light">Managed Hosting &amp; Maintenance</p>
@@ -259,30 +299,23 @@ function BillingView() {
           </p>
           <p className="mt-1 text-sm text-white/70">or $990 / year paid upfront — 2 months free</p>
         </div>
-        <div className="space-y-4 p-7">
+        <div className="space-y-5 p-7">
           <p className="text-sm text-muted-foreground">
             Secure hosting, uptime monitoring, security updates, backups, and ongoing support for the 2911Rx website.
           </p>
-          {configured ? (
-            <div className="flex flex-col gap-3 sm:flex-row">
-              {monthly && (
-                <a href={monthly} target="_blank" rel="noopener noreferrer" className="flex-1">
-                  <Button size="lg" className="w-full"><CreditCard className="h-4 w-4" /> Pay $99 / month</Button>
-                </a>
-              )}
-              {annual && (
-                <a href={annual} target="_blank" rel="noopener noreferrer" className="flex-1">
-                  <Button variant="outline" size="lg" className="w-full"><CreditCard className="h-4 w-4" /> Pay $990 / year</Button>
-                </a>
-              )}
+          {opts.length ? (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {opts.map((o) => (
+                <PayOption key={o.label} embed={o.embed} url={o.url} label={o.label} outline={o.outline} />
+              ))}
             </div>
           ) : (
             <p className="rounded-lg border border-dashed border-border bg-muted/50 p-4 text-sm text-muted-foreground">
-              No payment link is set yet. Add your monthly and/or annual pay link in the{" "}
-              <span className="font-medium text-foreground">Settings</span> tab to turn on the buttons here.
+              No payment option is set yet. Add the PayPal button code or pay link in the{" "}
+              <span className="font-medium text-foreground">Settings</span> tab to turn on payments here.
             </p>
           )}
-          <p className="text-xs text-muted-foreground">Payments are processed securely on the provider's site. You'll get a receipt by email.</p>
+          <p className="text-xs text-muted-foreground">Payments are processed securely by PayPal. You'll receive a receipt by email.</p>
         </div>
       </Card>
     </div>
