@@ -75,7 +75,7 @@ export type Setting = typeof settings.$inferSelect;
 // Keys safe to expose publicly (used by the site itself).
 export const PUBLIC_SETTING_KEYS = ["contact_email", "contact_phone", "calendar_url"] as const;
 // Admin-only keys (never sent to the public site).
-export const PRIVATE_SETTING_KEYS = ["notify_email", "resend_api_key", "resend_from", "pay_url_monthly", "pay_url_annual"] as const;
+export const PRIVATE_SETTING_KEYS = ["notify_email", "resend_api_key", "resend_from", "pay_url_monthly", "pay_url_annual", "pay_embed_monthly", "pay_embed_annual"] as const;
 export const ALL_SETTING_KEYS = [...PUBLIC_SETTING_KEYS, ...PRIVATE_SETTING_KEYS] as const;
 export type SettingKey = (typeof ALL_SETTING_KEYS)[number];
 // Settings only a super admin may view or change (secrets). Regular admins never
