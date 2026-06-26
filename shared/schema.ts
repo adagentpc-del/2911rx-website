@@ -78,6 +78,9 @@ export const PUBLIC_SETTING_KEYS = ["contact_email", "contact_phone", "calendar_
 export const PRIVATE_SETTING_KEYS = ["notify_email", "resend_api_key", "resend_from"] as const;
 export const ALL_SETTING_KEYS = [...PUBLIC_SETTING_KEYS, ...PRIVATE_SETTING_KEYS] as const;
 export type SettingKey = (typeof ALL_SETTING_KEYS)[number];
+// Settings only a super admin may view or change (secrets). Regular admins never
+// see these values and the server ignores writes to them from non-super admins.
+export const SUPERADMIN_SETTING_KEYS = ["resend_api_key"] as const;
 
 /* ------------------------------------------------------------------ */
 /* Analytics events (privacy-friendly: no cookies, IP, or fingerprint) */
