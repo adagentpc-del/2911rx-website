@@ -67,6 +67,34 @@ async function sendLeadAlert(lead: Inquiry) {
   }
 }
 
+/** Auto-acknowledgment to the person who inquired. Best-effort; never throws. */
+async function sendLeadConfirmation(lead: Inquiry) {
+  try {
+    const s = await storage.getSettings();
+    const key = s.resend_api_key;
+    if (!key || !lead.email) return; // confirmations not configured yet
+    const from = s.resend_from || "2911Rx <onboarding@resend.dev>";
+    const firstName = (lead.name || "there").split(" ")[0];
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: [lead.email],
+        subject: "We received your 2911Rx inquiry",
+        html:
+          `<p>Hi ${firstName},</p>` +
+          `<p>Thanks for reaching out to 2911Rx. We've received your inquiry and a member of our team will follow up within one business day to schedule your consultation and answer your questions.</p>` +
+          `<p>If there's anything you'd like us to prepare for, just reply to this email.</p>` +
+          `<p>— The 2911Rx Team</p>` +
+          `<p style="font-size:12px;color:#888;margin-top:24px">2911Rx partners with licensed healthcare providers and wellness organizations. This message confirms your inquiry and is not medical advice.</p>`,
+      }),
+    });
+  } catch (err) {
+    console.error("Lead confirmation email failed:", err);
+  }
+}
+
 export function registerRoutes(app: Express) {
   /* ---------------- Public: lead capture ---------------- */
   app.post("/api/inquiries", async (req, res) => {
@@ -79,6 +107,7 @@ export function registerRoutes(app: Express) {
       const inquiry = await storage.createInquiry(parsed.data);
       await storage.logEvent("lead", "/contact");
       void sendLeadAlert(inquiry);
+      void sendLeadConfirmation(inquiry);
       res.status(201).json({ ok: true, id: inquiry.id });
     } catch (err) {
       console.error("Failed to save inquiry:", err);
