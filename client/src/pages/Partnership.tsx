@@ -9,6 +9,7 @@ import {
   IconEducation,
   IconBuilding,
   IconArrow,
+  IconCheck,
 } from "@/components/Icons";
 import { DonutChart, StatBand } from "@/components/DataViz";
 import { LifestyleBand } from "@/components/Photo";
@@ -82,6 +83,36 @@ const BENEFITS = [
   },
 ];
 
+const IN_PRACTICE = [
+  "GLP-1, metabolic, and peptide programs under one partner",
+  "Structured onboarding and provider education",
+  "Ordering through a single provider portal",
+  "Operational support so your team can focus on patients",
+];
+
+const DISTRIBUTION = [
+  "Volume-based partnership pricing that scales with you",
+  "Licensed, accredited pharmacy fulfillment",
+  "Multi-state shipping with an emphasis on supply continuity",
+  "Fast provider verification and onboarding",
+  "A dedicated account and operational relationship",
+];
+
+function TrackList({ items }: { items: string[] }) {
+  return (
+    <ul className="mt-5 space-y-2.5">
+      {items.map((t) => (
+        <li key={t} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+          <span className="mt-0.5 shrink-0 text-teal-dark">
+            <IconCheck className="h-4 w-4" />
+          </span>
+          {t}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function Partnership() {
   return (
     <>
@@ -108,6 +139,75 @@ export default function Partnership() {
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Two ways to partner */}
+      <section className="py-20 md:py-24">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-teal-dark">
+              Two ways to partner
+            </p>
+            <h2 className="text-3xl tracking-tight md:text-[2.4rem]">
+              Choose the partnership that fits your model
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Whether you treat patients in-house or distribute across a network, 2911Rx gives you
+              dependable supply and the operational support behind it.
+            </p>
+          </motion.div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <motion.div
+              {...fadeUp}
+              className="flex flex-col rounded-3xl border border-border/80 bg-card p-8 shadow-[0_12px_40px_-18px_hsl(214_45%_11%/0.16)]"
+            >
+              <span className="icon-tile mb-5">
+                <IconBuilding />
+              </span>
+              <h3 className="font-display text-xl font-semibold">In-practice provider program</h3>
+              <p className="mt-2.5 text-muted-foreground">
+                For clinics, med spas, and telehealth providers offering GLP-1, metabolic, and
+                peptide wellness programs to their own patients.
+              </p>
+              <TrackList items={IN_PRACTICE} />
+              <div className="mt-auto pt-7">
+                <Link href="/contact">
+                  <Button className="w-full sm:w-auto">
+                    Become a Partner <IconArrow />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col rounded-3xl border border-teal/40 bg-card p-8 ring-1 ring-teal/15 shadow-[0_16px_50px_-20px_hsl(174_60%_30%/0.28)]"
+            >
+              <span className="icon-tile mb-5">
+                <IconFulfillment />
+              </span>
+              <h3 className="font-display text-xl font-semibold">Wholesale &amp; distribution partner</h3>
+              <p className="mt-2.5 text-muted-foreground">
+                For organizations distributing or supplying across multiple locations, brands, or a
+                provider network, with 2911Rx as your fulfillment partner.
+              </p>
+              <TrackList items={DISTRIBUTION} />
+              <div className="mt-auto pt-7">
+                <Link href="/contact">
+                  <Button className="w-full sm:w-auto">
+                    Become a Distribution Partner <IconArrow />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+          <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-muted-foreground">
+            Available therapies, formulations, and pricing depend on current regulatory status and a
+            provider's independent clinical judgment, and are discussed during your consultation.
+          </p>
         </div>
       </section>
 

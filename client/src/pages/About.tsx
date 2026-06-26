@@ -129,7 +129,7 @@ export default function About() {
             <div className="mt-8 flex justify-center">
               <Link href="/contact">
                 <Button size="lg">
-                  Request Information <IconArrow />
+                  Become a Partner <IconArrow />
                 </Button>
               </Link>
             </div>

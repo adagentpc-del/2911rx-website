@@ -132,10 +132,14 @@ export default function Home() {
                 </a>
               </div>
               <p className="mt-5 text-sm text-white/45">
-                No cost and no obligation to explore, built for licensed providers and wellness
-                organizations. New here?{" "}
+                No cost, no obligation to explore. The provider ordering portal is for approved
+                partners, so if you're new,{" "}
+                <Link href="/contact" className="text-white/70 underline underline-offset-4 hover:text-white">
+                  become a partner
+                </Link>{" "}
+                to get access, or{" "}
                 <Link href="/how-it-works" className="text-white/70 underline underline-offset-4 hover:text-white">
-                  See how it works
+                  see how it works
                 </Link>
                 .
               </p>

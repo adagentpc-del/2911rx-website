@@ -66,6 +66,10 @@ const FAQS = [
     a: "Fulfillment runs through our trusted pharmacy relationship with an emphasis on consistency and reliability. Orders placed through the provider portal are processed efficiently, with clear communication at every step.",
   },
   {
+    q: "Can I order right now, or do I need to be a partner first?",
+    a: "Ordering runs through our provider portal and is available to approved provider partners. If you're new, start by requesting partnership. Once your practice is verified and onboarded, you'll receive portal access to place orders. This keeps ordering limited to licensed providers operating within their scope of practice.",
+  },
+  {
     q: "Who can become a partner?",
     a: "Licensed healthcare providers and wellness organizations, including wellness clinics, med spas, concierge medicine groups, telehealth operators, functional medicine clinics, and longevity-focused practices.",
   },
