@@ -14,6 +14,34 @@ const NAV_LINKS = [
   { href: "/about", label: "About" },
 ];
 
+/**
+ * "Book a Consult" link. Opens the calendar URL set by admins in the dashboard
+ * (settings.calendar_url) in a new tab — same target as the consult popup.
+ * Falls back to the contact page until a calendar link is configured, so the
+ * tab is never a dead link.
+ */
+function ConsultLink({ className, onClick }: { className?: string; onClick?: () => void }) {
+  const settings = useSettings();
+  if (settings.calendar_url) {
+    return (
+      <a
+        href={settings.calendar_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        onClick={onClick}
+      >
+        Book a Consult
+      </a>
+    );
+  }
+  return (
+    <Link href="/contact" className={className} onClick={onClick}>
+      Book a Consult
+    </Link>
+  );
+}
+
 export function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <Link href="/" className="flex items-baseline gap-px font-display text-[1.65rem] font-semibold tracking-tight">
@@ -44,6 +72,7 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          <ConsultLink className="text-sm font-medium text-foreground/70 transition-colors hover:text-teal-dark" />
         </nav>
         <div className="hidden items-center gap-3 md:flex">
           <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer">
@@ -77,6 +106,10 @@ export function Header() {
                 {l.label}
               </Link>
             ))}
+            <ConsultLink
+              className="rounded-md px-2 py-2.5 text-sm font-medium hover:bg-muted"
+              onClick={() => setOpen(false)}
+            />
             <a
               href={PORTAL_URL}
               target="_blank"
