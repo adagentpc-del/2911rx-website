@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const PORTAL_URL = "https://bloom.greenstonerx.com/dtp/69b3278ba0eb867770b24280";
+export const PORTAL_URL = "https://portal.bloomrx.io/dtp/69b3278ba0eb867770b24280";
 
 /**
  * Editable site settings. Fill these in when the client provides them.
